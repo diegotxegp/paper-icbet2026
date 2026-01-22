@@ -7,282 +7,336 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+
+\usepackage[acronym]{glossaries}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shadows, fit}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{url}
+
+\input{acronyms}
+
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Conference Paper Title*\\
-{\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
-should not be used}
-\thanks{Identify applicable funding agency here. If none, delete this.}
+\title{Towards a Human-Guided AutoML Application for Democratizing Predictive Modeling in Clinical Research\\
+\thanks{This work has been supported by grant  PID2023-146243OB-I00 funded by MICIU/AEI/10.13039/501100011033 and by ``ERDF/EU''.}
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
+\author{\IEEEauthorblockN{1\textsuperscript{st} Diego Garc\'ia-Prieto}
+\IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
+\textit{University of Cantabria}\\
+Santander, Spain \\
+diego.garciaprieto@unican.es}
 \and
-\IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
+\IEEEauthorblockN{2\textsuperscript{nd} Camilo Palazuelos}
+\IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
+\textit{University of Cantabria}\\
+Santander, Spain \\
+camilo.palazuelos@unican.es}
 \and
-\IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
+\IEEEauthorblockN{3\textsuperscript{rd} Rafael Duque}
+\IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
+\textit{University of Cantabria}\\
+Santander, Spain \\
+rafael.duque@unican.es}
 \and
-\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
+\IEEEauthorblockN{4\textsuperscript{th} Luc\'ia Lav\'in-Alconero}
+\IEEEauthorblockA{\textit{Clinical Trials Agency Valdecilla-IDIVAL} \\
+\textit{Marqu\'es de Valdecilla University Hospital}\\
+Santander, Spain \\
+lucia.lavin@idival.org}
 }
 
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+Clinical research faces a significant gap between advanced machine learning capabilities and their practical adoption by non-technical researchers. Existing AutoML tools treat clinical data as generic datasets, ignoring the methodological particularities of patient registries, observational studies and clinical trials. To address this, we present HAMELIN, an AutoML application under active development that bridges this gap through a protocol-aware interface aligned with Human-Guided Machine Learning principles. HAMELIN enables clinical researchers to build predictive models without coding, incorporating their domain knowledge to guide the process.
 \end{abstract}
 
 \begin{IEEEkeywords}
-component, formatting, style, styling, insert
+machine learning for healthcare, automated machine learning, human-guided machine learning, clinical research, protocol-aware systems
 \end{IEEEkeywords}
 
 \section{Introduction}
-This document is a model and instructions for \LaTeX.
-Please observe the conference page limits. 
+\label{sec:introduction}
 
-\section{Ease of Use}
+The rapid integration of \gls{ai} into medicine faces a key challenge: clinicians have domain knowledge and research hypotheses but lack technical skills for complex \gls{ml} pipelines, while data scientists can build advanced models but often lack the clinical context to ensure validity and relevance \cite{gisselbaek2025bridging}. This expertise gap hinders the adoption of \gls{ai} in clinical research.
 
-\subsection{Maintaining the Integrity of the Specifications}
+Current state-of-the-art \gls{automl} platforms fail to bridge this gap for clinical researchers \cite{waring2020automated}. They treat datasets as generic matrices, ignoring structures inherent to clinical research, such as patient registries, observational studies, and clinical trials. They are not protocol-aware, making it difficult to distinguish between variables that define study populations (inclusion criteria) and those measuring outcomes (endpoints). Moreover, their black-box nature complicates interpretation and poorly adapts to clinical particularities, such as temporal data organization or semantic distinctions between efficacy and safety variables.  
+Incorporating domain knowledge into the modeling process is essential \cite{sirocchi2024medical}. \gls{hamelin}, based on \gls{hgml} principles, provides a no-code, protocol-aware environment where clinicians and data scientists collaborate using a shared language. By explicitly defining variables, distinguishing endpoints from exposures, and interventions from covariates, \gls{hamelin} facilitates the development of predictive models that are clinically coherent and aligned with the structural requirements of research designs, effectively bridging the gap between technical expertise and clinical relevance.
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+\section{Background}
+\label{sec:background}
 
-\section{Prepare Your Paper Before Styling}
-Before you begin to format your paper, first write and save the content as a 
-separate text file. Complete all content and organizational editing before 
-formatting. Please note sections \ref{AA}--\ref{SCM} below for more information on 
-proofreading, spelling and grammar.
+\subsection{Clinical Research Methodologies}
+\label{subsec:clinical_research}
 
-Keep your text and graphic files separate until after the text has been 
-formatted and styled. Do not number text heads---{\LaTeX} will do that 
-for you.
+Clinical research employs distinct frameworks, each with specific design principles and analytical constraints \cite{kahlert2017control}. Patient registries collect real-world, long-term data from people who share the same medical condition. Observational studies test specific hypotheses about exposure-outcome associations without intervention, requiring adjustment for confounding variables. Clinical trials evaluate interventions through randomization, blinding and rigorous protocols defining inclusion/exclusion criteria, temporal phases (screening, intervention, follow-up) and endpoint hierarchies (primary for efficacy, secondary for safety).
 
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations and acronyms the first time they are used in the text, 
-even after they have been defined in the abstract. Abbreviations such as 
-IEEE, SI, MKS, CGS, ac, dc, and rms do not have to be defined. Do not use 
-abbreviations in the title or heads unless they are unavoidable.
+These distinctions impose specific requirements on predictive modeling that generic \gls{ml} pipelines ignore \cite{gao2025confounder}. A model trained without awareness of these constraints risks producing invalid results.
 
-\subsection{Units}
-\begin{itemize}
-\item Use either SI (MKS) or CGS as primary units. (SI units are encouraged.) English units may be used as secondary units (in parentheses). An exception would be the use of English units as identifiers in trade, such as ``3.5-inch disk drive''.
-\item Avoid combining SI and CGS units, such as current in amperes and magnetic field in oersteds. This often leads to confusion because equations do not balance dimensionally. If you must use mixed units, clearly state the units for each quantity that you use in an equation.
-\item Do not mix complete spellings and abbreviations of units: ``Wb/m\textsuperscript{2}'' or ``webers per square meter'', not ``webers/m\textsuperscript{2}''. Spell out units when they appear in text: ``. . . a few henries'', not ``. . . a few H''.
-\item Use a zero before decimal points: ``0.25'', not ``.25''. Use ``cm\textsuperscript{3}'', not ``cc''.)
-\end{itemize}
+\subsection{Related Work}
+\label{subsec:related_work}
 
-\subsection{Equations}
-Number equations consecutively. To make your 
-equations more compact, you may use the solidus (~/~), the exp function, or 
-appropriate exponents. Italicize Roman symbols for quantities and variables, 
-but not Greek symbols. Use a long dash rather than a hyphen for a minus 
-sign. Punctuate equations with commas or periods when they are part of a 
-sentence, as in:
-\begin{equation}
-a+b=\gamma\label{eq}
-\end{equation}
+\gls{automl} tools such as Auto-sklearn \cite{autosklearn}, AutoGluon \cite{autogluon}, H2O \cite{h2o3}, and Ludwig \cite{ludwig} have successfully automated the \gls{ml} pipeline \cite{he2021automl}, but remain largely domain-agnostic. They cannot distinguish variable hierarchy (primary endpoints vs. secondary endpoints vs. exposures), handle complex inclusion/exclusion logic, or recognize temporal data disposition across protocol phases. No tool to date adapts to the distinct requirements of patient registries, observational studies and clinical trials within a unified interface. This is precisely the gap addressed by protocol-aware \gls{ai} systems \cite{zainleveraging}.
 
-Be sure that the 
-symbols in your equation have been defined before or immediately following 
-the equation. Use ``\eqref{eq}'', not ``Eq.~\eqref{eq}'' or ``equation \eqref{eq}'', except at 
-the beginning of a sentence: ``Equation \eqref{eq} is . . .''
+\gls{hgml} \cite{gil2019towards} is an approach in which domain experts guide and influence the learning process, rather than relying solely on automated algorithms. It promotes collaborative workflows where experts validate intermediate decisions and shape model behaviour.
 
-\subsection{\LaTeX-Specific Advice}
+\subsection{Ludwig AutoML}
+\label{subsec:ludwig}
 
-Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references instead
-of ``hard'' references (e.g., \verb|(1)|). That will make it possible
-to combine sections, add equations, or change the order of figures or
-citations without having to go through the file line by line.
+ Ludwig \cite{ludwig} is an \gls{automl} tool which automates the full \gls{ml} workflow, including end-to-end model training, algorithm selection based on data characteristics, performance evaluation with multiple metrics and validation schemes, hyperparameter optimisation and seamless inference on new data. Being YAML-based, a human-readable data-serialization format, it allows pipelines to be specified declaratively without programming. The choice of Ludwig as an backend is motivated by its ease of configuration, strong community support and active open-source development, which ensure long-term maintainability \cite{palazuelos2024non}.
 
-Please don't use the \verb|{eqnarray}| equation environment. Use
-\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
-environment leaves unsightly spaces around relation symbols.
 
-Please note that the \verb|{subequations}| environment in {\LaTeX}
-will increment the main equation counter even when there are no
-equation numbers displayed. If you forget that, you might write an
-article in which the equation numbers skip from (17) to (20), causing
-the copy editors to wonder if you've discovered a new method of
-counting.
+\section{Application}
+\label{sec:application}
 
-{\BibTeX} does not work by magic. It doesn't get the bibliographic
-data from thin air but from .bib files. If you use {\BibTeX} to produce a
-bibliography you must send the .bib files. 
+\gls{hamelin} is an application designed to operationalize \gls{hgml} principles for clinical research. The system design was guided by mockups based on real clinical research protocols provided by clinical research professionals. This ensures that the interface terminology, workflow structure, and validation mechanisms align with actual clinical research practices.
 
-{\LaTeX} can't read your mind. If you assign the same label to a
-subsubsection and a table, you might find that Table I has been cross
-referenced as Table IV-B3. 
+\subsection{Architecture}
 
-{\LaTeX} does not have precognitive abilities. If you put a
-\verb|\label| command before the command that updates the counter it's
-supposed to be using, the label will pick up the last counter to be
-cross referenced instead. In particular, a \verb|\label| command
-should not go before the caption of a figure or a table.
+The system architecture, illustrated in Figure~\ref{fig:system_architecture}, follows a three-layer modular design. The interface layer provides a graphical environment for dataset loading, configuration, and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, and configuration generation. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, and hyperparameter optimization.
 
-Do not use \verb|\nonumber| inside the \verb|{array}| environment. It
-will not stop equation numbers inside \verb|{array}| (there won't be
-any anyway) and it might stop a wanted equation number in the
-surrounding equation.
+\begin{figure*}[h]
+\centering
+\scalebox{0.75}{
+\begin{tikzpicture}[
+    node distance=2cm,
+    box/.style={
+        rectangle,
+        draw,
+        text width=4cm,
+        text centered,
+        minimum height=2cm,
+        rounded corners=0.3cm,
+        drop shadow,
+        line width=1pt,
+        font=\scriptsize
+    },
+    frontend/.style={box, fill=pink!35, draw=pink!70},
+    backend/.style={box, fill=cyan!10, draw=cyan!50},
+    ludwig/.style={box, fill=yellow!35, draw=yellow!70},
+    arrow/.style={->, thick, color=gray!70, line width=0.8pt, shorten >=2pt, shorten <=2pt},
+    system/.style={
+        rectangle,
+        draw,
+        dotted,
+        thick,
+        rounded corners=0.4cm,
+        color=purple!60,
+        line width=1.5pt
+    }
+]
 
-\subsection{Some Common Mistakes}\label{SCM}
-\begin{itemize}
-\item The word ``data'' is plural, not singular.
-\item The subscript for the permeability of vacuum $\mu_{0}$, and other common scientific constants, is zero with subscript formatting, not a lowercase letter ``o''.
-\item In American English, commas, semicolons, periods, question and exclamation marks are located within quotation marks only when a complete thought or name is cited, such as a title or full quotation. When quotation marks are used, instead of a bold or italic typeface, to highlight a word or phrase, punctuation should appear outside of the quotation marks. A parenthetical phrase or statement at the end of a sentence is punctuated outside of the closing parenthesis (like this). (A parenthetical sentence is punctuated within the parentheses.)
-\item A graph within a graph is an ``inset'', not an ``insert''. The word alternatively is preferred to the word ``alternately'' (unless you really mean something that alternates).
-\item Do not use the word ``essentially'' to mean ``approximately'' or ``effectively''.
-\item In your paper title, if the words ``that uses'' can accurately replace the word ``using'', capitalize the ``u''; if not, keep using lower-cased.
-\item Be aware of the different meanings of the homophones ``affect'' and ``effect'', ``complement'' and ``compliment'', ``discreet'' and ``discrete'', ``principal'' and ``principle''.
-\item Do not confuse ``imply'' and ``infer''.
-\item The prefix ``non'' is not a word; it should be joined to the word it modifies, usually without a hyphen.
-\item There is no period after the ``et'' in the Latin abbreviation ``et al.''.
-\item The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
-\end{itemize}
-An excellent style manual for science writers is \cite{b7}.
+% Nodos principales (horizontal)
+\node[frontend] (frontend) at (0,0) {
+    \textbf{Frontend}\\
+    \textit{Graphical User Interface}\\[2mm]
+    Loading and visualization of datasets\\
+    Intuitive visual configuration\\
+    Guided tab navigation\\
+    Presentation of results\\
+    Validation of user inputs
+};
+\node[backend] (backend) at (5.5,0) {
+    \textbf{Backend}\\
+    \textit{Application logic layer}\\[2mm]
+    Data validation and processing\\
+    Translation of user commands\\
+    Automatic configuration file\\
+    Workflow coordination\\
+    Error and exception handling
+};
+\node[ludwig] (ludwig) at (11,0) {
+    \textbf{Ludwig}\\
+    \textit{AutoML engine}\\[2mm]
+    Automatic model training\\
+    Intelligent algorithm selection\\
+    Performance evaluation\\
+    Hyperparameter optimization\\
+    Prediction
+};
 
-\subsection{Authors and Affiliations}
-\textbf{The class file is designed for, but not limited to, six authors.} A 
-minimum of one author is required for all conference articles. Author names 
-should be listed starting from left to right and then moving down to the 
-next line. This is the author sequence that will be used in future citations 
-and by indexing services. Names should not be listed in columns nor group by 
-affiliation. Please keep your affiliations as succinct as possible (for 
-example, do not differentiate among departments of the same organization).
+% Flechas bidireccionales
+\draw[arrow] (frontend.east) -- (backend.west);
+\draw[arrow] (backend.west) -- (frontend.east);
+\draw[arrow] (backend.east) -- (ludwig.west);
+\draw[arrow] (ludwig.west) -- (backend.east);
 
-\subsection{Identify the Headings}
-Headings, or heads, are organizational devices that guide the reader through 
-your paper. There are two types: component heads and text heads.
+% Usuario
+\node[above=0.8cm of frontend.north, 
+      rectangle, 
+      draw=gray!50, 
+      fill=gray!10, 
+      text width=2.5cm, 
+      text centered,
+      rounded corners=0.2cm] (user) {
+    \scriptsize \textbf{User}\\
+    \scriptsize Clinical researcher
+};
+\draw[arrow] (user.south) -- (frontend.north);
+\draw[arrow] (frontend.north) -- (user.south);
 
-Component heads identify the different components of your paper and are not 
-topically subordinate to each other. Examples include Acknowledgments and 
-References and, for these, the correct style to use is ``Heading 5''. Use 
-``figure caption'' for your Figure captions, and ``table head'' for your 
-table title. Run-in heads, such as ``Abstract'', will require you to apply a 
-style (in this case, italic) in addition to the style provided by the drop 
-down menu to differentiate the head from the text.
+% Etiquetas de capas alineadas y más abajo
+\node[below=0.6cm of frontend.south, anchor=north] {\scriptsize \textbf{INTERFACE LAYER}};
+\node[below=0.75cm of backend.south, anchor=north] {\scriptsize \textbf{CORE LOGIC LAYER}}; 
+\node[below=0.75cm of ludwig.south, anchor=north] {\scriptsize \textbf{AUTOML LAYER}}; 
 
-Text heads organize the topics on a relational, hierarchical basis. For 
-example, the paper title is the primary text head because all subsequent 
-material relates and elaborates on this one topic. If there are two or more 
-sub-topics, the next level head (uppercase Roman numerals) should be used 
-and, conversely, if there are not at least two sub-topics, then no subheads 
-should be introduced.
+\end{tikzpicture}
+}
+\caption{System architecture}
+\label{fig:system_architecture}
+\end{figure*}
 
-\subsection{Figures and Tables}
-\paragraph{Positioning Figures and Tables} Place figures and tables at the top and 
-bottom of columns. Avoid placing them in the middle of columns. Large 
-figures and tables may span across both columns. Figure captions should be 
-below the figures; table heads should appear above the tables. Insert 
-figures and tables after they are cited in the text. Use the abbreviation 
-``Fig.~\ref{fig}'', even at the beginning of a sentence.
 
-\begin{table}[htbp]
-\caption{Table Type Styles}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
-\cline{2-4} 
-\textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
-\hline
-copy& More table copy$^{\mathrm{a}}$& &  \\
-\hline
-\multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
+
+\subsection{User Interface and Workflow}
+
+The interface employs a tabbed navigation system that guides users through the entire \gls{ml} pipeline. This design provides clear waypoints while maintaining the analytical context, with each tab representing a distinct phase that follows the logical progression typically found in clinical research protocols (Figure~\ref{fig:workflow}). Earlier steps can be revisited if needed.
+
+\begin{figure*}[htbp]
+\centering
+\scalebox{0.70}{
+\begin{tikzpicture}[node distance=2.5cm, auto]
+
+    % Styles
+    \tikzset{
+        mystep/.style={
+            rectangle, rounded corners,
+            minimum width=3.6cm, minimum height=1cm,
+            text centered, font=\scriptsize,
+            text width=3.3cm, align=center,
+            line width=1.2pt
+        },
+        arrow/.style={thick,<->,>=stealth, gray!70}
+    }
+
+    % ---------- ROW 1 ----------
+    \node (start)  [mystep, fill=blue!20, draw=blue!70]   
+        {\textbf{Start}\\[2mm] Project creation \& dataset loading};
+
+    \node (status) [mystep, fill=cyan!20, draw=cyan!70, right=1.0cm of start] 
+        {\textbf{Status}\\[2mm] Automatic exploration};
+
+    \node (primary)[mystep, fill=teal!20, draw=teal!70, right=1.0cm of status] 
+        {\textbf{Primary Variable}\\[2mm] Target selection};
+
+    % ---------- ROW 2 ----------
+    \node (criteria) [mystep, fill=yellow!20, draw=yellow!70, below=2cm of start] 
+        {\textbf{Criteria}\\[2mm] Inclusion/exclusion};
+
+    \node (settings) [mystep, fill=orange!20, draw=orange!70, right=1.0cm of criteria] 
+        {\textbf{Settings}\\[2mm] Metrics \&\\ hyperparameters};
+
+    \node (process)  [mystep, fill=red!20, draw=red!70, right=1.0cm of settings] 
+        {\textbf{Process}\\[2mm] Model training};
+
+    \node (results)  [mystep, fill=green!20, draw=green!70, right=1.0cm of process] 
+        {\textbf{Results}\\[2mm] Interactive charts};
+
+    % ---------- ARROWS ----------
+    \draw [arrow] (start) -- (status);
+    \draw [arrow] (status) -- (primary);
+
+    \draw [arrow] (primary.south) -- (criteria.north);
+
+    \draw [arrow] (criteria) -- (settings);
+    \draw [arrow] (settings) -- (process);
+    \draw [arrow] (process) -- (results);
+
+\end{tikzpicture}
+}
+\caption{Clinical machine learning workflow.}
+\label{fig:workflow}
+\end{figure*}
+
+
+The workflow itself comprises seven steps: starting with project creation and dataset loading, followed by automatic dataset exploration for descriptive statistics, missing value analysis, and outcome variable identification. Users then select the target variable, with automatic detection of whether the task is classification or regression. Inclusion and exclusion criteria are defined through an intuitive interface, after which evaluation metrics, missing data strategies, and hyperparameter settings are configured. Model training is executed with real-time progress monitoring, and results are presented in a written way and through charts and confusion matrices (Figure~\ref{fig:tab-based_interface}).
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{img/Captura de pantalla 2025-11-26 111307.png}
+    \caption{Training outcomes and model performance.}
+    \label{fig:tab-based_interface}
+\end{figure*}
+
+
+\section{Alignment with Human-Guided ML}
+\label{subsec:hgml_alignment}
+
+To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria, which provide a structured framework to assess how domain experts can guide data use, model development, and result interpretation in interactive ML systems. Applying these criteria highlights both the strengths and limitations of \gls{hamelin} in supporting clinical researchers (Table \ref{tab:hgml_alignment}).
+
+\gls{hamelin} offers strong support for data-centric tasks: clinicians can select variables, define inclusion/exclusion rules, and create protocol-consistent subpopulations. Temporal framing of study phases and basic missing-value handling are partially supported, but interactive data augmentation, active labeling, and fine-grained train/test split control are unsupported.
+
+Regarding model development, \gls{hamelin} relies on the underlying \gls{automl} backend for model-family selection and hyperparameter tuning, giving users high-level control over preprocessing and training options but not detailed model choices or step-wise comparisons. In model interpretation, domain-relevant metrics are fully available, though intermediate artefacts and systematic comparisons across models or preprocessing variants are lacking. Overall, \gls{hamelin} empowers clinicians in data-centric decisions, while model-centric flexibility and advanced comparison features need further development.
+
+\begin{table*}[t]
+\caption{Mapping between \gls{hgml} tasks \cite{gil2019towards} and \gls{hamelin} clinical functionalities.}
+\label{tab:hgml_alignment}
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.075}
+\begin{tabular}{@{}l l@{}}
+\toprule
+\textbf{HGML task} & \textbf{Where in HAMELIN} \\
+\midrule
+\multicolumn{2}{l}{\textbf{Data Use}} \\
+\midrule
+\parbox[t]{0.45\textwidth}{[VS1] Variable selection (prioritise variables)} & \parbox[t]{0.55\textwidth}{\emph{Primary Variable}, \emph{Settings}} \\
+\parbox[t]{0.45\textwidth}{[VS2] Create new variables from existing ones} & \parbox[t]{0.55\textwidth}{-- (external preprocessing)} \\
+\parbox[t]{0.45\textwidth}{[VS3] Change temporal / spatial framing of variables} & \parbox[t]{0.55\textwidth}{\emph{Criteria}; protocol phases} \\
+\parbox[t]{0.45\textwidth}{[VS4] Impute missing values using other variables} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\textwidth}{[VS5] Augment data using new sources} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[VR1] Require inclusion / exclusion of variables} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\textwidth}{[IS1] Select instances to label / annotate} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[IS2] Select subpopulation of instances} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\textwidth}{[IS3] Remove specific instances} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\textwidth}{[IS4] Define train/test split and cross-validation} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\midrule
+\multicolumn{2}{l}{\textbf{Model Development}} \\
+\midrule
+\parbox[t]{0.45\textwidth}{[MS1] Request a specific type of model} & \parbox[t]{0.55\textwidth}{\emph{AutoML Layer} (Ludwig)} \\
+\parbox[t]{0.45\textwidth}{[MS2] Replace the model in a prior solution} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[PT1] Request specific parameter values} & \parbox[t]{0.55\textwidth}{\emph{Settings}, Ludwig HP search} \\
+\parbox[t]{0.45\textwidth}{[SD1] Request specific data-preparation steps} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\textwidth}{[SD2] Replace a data-preparation step} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\midrule
+\multicolumn{2}{l}{\textbf{Model Interpretation and Comparison}} \\
+\midrule
+\parbox[t]{0.45\textwidth}{[QC1] Request quantities of interest / metrics} & \parbox[t]{0.55\textwidth}{\emph{Results}} \\
+\parbox[t]{0.45\textwidth}{[QC2] Request intermediate results} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[MC1] Compare solutions with different model types} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[MC2] Compare solutions on different subsets of instances} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[MC3] Compare solutions with same model but different data prep} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[MC4] Compare solutions with same model but different parameters} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[MC5] Compare two models with all other steps equal} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\textwidth}{[PC1] Several solutions with same model and varying parameter ranges} & \parbox[t]{0.55\textwidth}{--} \\
+\bottomrule
 \end{tabular}
-\label{tab1}
-\end{center}
-\end{table}
+\end{table*}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics{fig1.png}}
-\caption{Example of a figure caption.}
-\label{fig}
-\end{figure}
 
-Figure Labels: Use 8 point Times New Roman for Figure labels. Use words 
-rather than symbols or abbreviations when writing Figure axis labels to 
-avoid confusing the reader. As an example, write the quantity 
-``Magnetization'', or ``Magnetization, M'', not just ``M''. If including 
-units in the label, present them within parentheses. Do not label axes only 
-with units. In the example, write ``Magnetization (A/m)'' or ``Magnetization 
-\{A[m(1)]\}'', not just ``A/m''. Do not label axes with a ratio of 
-quantities and units. For example, write ``Temperature (K)'', not 
-``Temperature/K''.
+\section{Conclusions}
+\label{sec:conclusions}
+
+This work presents a tool that partially satisfies the criteria for \gls{hgml}, addressing the critical gap between advanced \gls{ml} capabilities and their practical adoption in clinical research. By embedding protocol-aware constraints, the system ensures that predictive models respect temporal structures, endpoint hierarchies, and inclusion/exclusion criteria across patient registries, observational studies, and clinical trials. This design enhances clinical validity and coherence, distinguishing the approach from existing domain-agnostic \gls{automl} platforms that treat clinical datasets as generic matrices.
+
+The evaluation indicates strong support for data-centric operations, including variable selection, subpopulation definition, and inclusion/exclusion logic. Nevertheless, model-centric tasks, such as explicit model family selection, hyperparameter specification, and systematic comparison of alternative solutions, remain partially constrained. Ongoing development aims to extend interactive control over these stages, incorporate advanced feature engineering, provenance tracking, and multi-source data integration, moving the system toward full \gls{hgml} where domain expertise can guide all aspects of the modeling process.
+
 
 \section*{Acknowledgment}
 
-The preferred spelling of the word ``acknowledgment'' in America is without 
-an ``e'' after the ``g''. Avoid the stilted expression ``one of us (R. B. 
-G.) thanks $\ldots$''. Instead, try ``R. B. G. thanks$\ldots$''. Put sponsor 
-acknowledgments in the unnumbered footnote on the first page.
+This work has been supported by grant PID2023-146243OB-I00 funded by MICIU/AEI/10.13039/501100011033 and by ``ERDF/EU''.
 
-\section*{References}
+\begin{footnotesize}
 
-Please number citations consecutively within brackets \cite{b1}. The 
-sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
-number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
-the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
+\bibliographystyle{unsrt}
+\bibliography{bibliography.bib}
 
-Number footnotes separately in superscripts. Place the actual footnote at 
-the bottom of the column in which it was cited. Do not put footnotes in the 
-abstract or reference list. Use letters for table footnotes.
-
-Unless there are six authors or more give all authors' names; do not use 
-``et al.''. Papers that have not been published, even if they have been 
-submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
-that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
-Capitalize only the first word in a paper title, except for proper nouns and 
-element symbols.
-
-For papers published in translation journals, please give the English 
-citation first, followed by the original foreign-language citation \cite{b6}.
-
-\begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-\bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
-\bibitem{b3} I. S. Jacobs and C. P. Bean, ``Fine particles, thin films and exchange anisotropy,'' in Magnetism, vol. III, G. T. Rado and H. Suhl, Eds. New York: Academic, 1963, pp. 271--350.
-\bibitem{b4} K. Elissa, ``Title of paper if known,'' unpublished.
-\bibitem{b5} R. Nicole, ``Title of paper with only first word capitalized,'' J. Name Stand. Abbrev., in press.
-\bibitem{b6} Y. Yorozu, M. Hirano, K. Oka, and Y. Tagawa, ``Electron spectroscopy studies on magneto-optical media and plastic substrate interface,'' IEEE Transl. J. Magn. Japan, vol. 2, pp. 740--741, August 1987 [Digests 9th Annual Conf. Magnetics Japan, p. 301, 1982].
-\bibitem{b7} M. Young, The Technical Writer's Handbook. Mill Valley, CA: University Science, 1989.
-\end{thebibliography}
-\vspace{12pt}
-\color{red}
-IEEE conference templates contain guidance text for composing and formatting conference papers. Please ensure that all template text is removed from your conference paper prior to submission to the conference. Failure to remove the template text from your paper may result in your paper not being published.
+\end{footnotesize}
 
 \end{document}
