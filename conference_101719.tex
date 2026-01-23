@@ -101,59 +101,52 @@ These distinctions impose specific requirements on predictive modeling that gene
 
 The system architecture, illustrated in Figure~\ref{fig:system_architecture}, follows a three-layer modular design. The interface layer provides a graphical environment for dataset loading, configuration, and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, and configuration generation. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, and hyperparameter optimization.
 
-\begin{figure*}[h]
+\begin{figure}[H]
 \centering
 \scalebox{0.75}{
 \begin{tikzpicture}[
-    node distance=2cm,
+    node distance=1.5cm, % separación vertical entre nodos
     box/.style={
         rectangle,
         draw,
-        text width=4cm,
+        text width=6cm,
         text centered,
         minimum height=2cm,
         rounded corners=0.3cm,
         drop shadow,
         line width=1pt,
-        font=\scriptsize
+        font=\small
     },
     frontend/.style={box, fill=pink!35, draw=pink!70},
     backend/.style={box, fill=cyan!10, draw=cyan!50},
     ludwig/.style={box, fill=yellow!35, draw=yellow!70},
     arrow/.style={->, thick, color=gray!70, line width=0.8pt, shorten >=2pt, shorten <=2pt},
-    system/.style={
-        rectangle,
-        draw,
-        dotted,
-        thick,
-        rounded corners=0.4cm,
-        color=purple!60,
-        line width=1.5pt
-    }
 ]
 
-% Nodos principales (horizontal)
+% Nodos principales (vertical)
 \node[frontend] (frontend) at (0,0) {
     \textbf{Frontend}\\
-    \textit{Graphical User Interface}\\[2mm]
+    \textit{Graphical User Interface}\\[1.5mm]
     Loading and visualization of datasets\\
     Intuitive visual configuration\\
     Guided tab navigation\\
     Presentation of results\\
     Validation of user inputs
 };
-\node[backend] (backend) at (5.5,0) {
+
+\node[backend, below=1.5cm of frontend.south, anchor=north] (backend) {
     \textbf{Backend}\\
-    \textit{Application logic layer}\\[2mm]
+    \textit{Application logic layer}\\[1.5mm]
     Data validation and processing\\
     Translation of user commands\\
     Automatic configuration file\\
     Workflow coordination\\
     Error and exception handling
 };
-\node[ludwig] (ludwig) at (11,0) {
+
+\node[ludwig, below=1.5cm of backend.south, anchor=north] (ludwig) {
     \textbf{Ludwig}\\
-    \textit{AutoML engine}\\[2mm]
+    \textit{AutoML engine}\\[1.5mm]
     Automatic model training\\
     Intelligent algorithm selection\\
     Performance evaluation\\
@@ -161,11 +154,11 @@ The system architecture, illustrated in Figure~\ref{fig:system_architecture}, fo
     Prediction
 };
 
-% Flechas bidireccionales
-\draw[arrow] (frontend.east) -- (backend.west);
-\draw[arrow] (backend.west) -- (frontend.east);
-\draw[arrow] (backend.east) -- (ludwig.west);
-\draw[arrow] (ludwig.west) -- (backend.east);
+% Flechas bidireccionales verticales
+\draw[arrow] (frontend.south) -- (backend.north);
+\draw[arrow] (backend.north) -- (frontend.south);
+\draw[arrow] (backend.south) -- (ludwig.north);
+\draw[arrow] (ludwig.north) -- (backend.south);
 
 % Usuario
 \node[above=0.8cm of frontend.north, 
@@ -181,16 +174,16 @@ The system architecture, illustrated in Figure~\ref{fig:system_architecture}, fo
 \draw[arrow] (user.south) -- (frontend.north);
 \draw[arrow] (frontend.north) -- (user.south);
 
-% Etiquetas de capas alineadas y más abajo
-\node[below=0.6cm of frontend.south, anchor=north] {\scriptsize \textbf{INTERFACE LAYER}};
-\node[below=0.75cm of backend.south, anchor=north] {\scriptsize \textbf{CORE LOGIC LAYER}}; 
-\node[below=0.75cm of ludwig.south, anchor=north] {\scriptsize \textbf{AUTOML LAYER}}; 
+% Etiquetas de capas rotadas 90 grados, alineadas con el centro vertical de cada nodo
+\node[anchor=center, rotate=90] at ([xshift=-3.5cm]frontend.center) {\scriptsize \textbf{INTERFACE LAYER}};
+\node[anchor=center, rotate=90] at ([xshift=-3.5cm]backend.center) {\scriptsize \textbf{CORE LOGIC LAYER}};
+\node[anchor=center, rotate=90] at ([xshift=-3.5cm]ludwig.center) {\scriptsize \textbf{AUTOML LAYER}};
 
 \end{tikzpicture}
 }
 \caption{System architecture}
 \label{fig:system_architecture}
-\end{figure*}
+\end{figure}
 
 
 
@@ -198,7 +191,7 @@ The system architecture, illustrated in Figure~\ref{fig:system_architecture}, fo
 
 The interface employs a tabbed navigation system that guides users through the entire \gls{ml} pipeline. This design provides clear waypoints while maintaining the analytical context, with each tab representing a distinct phase that follows the logical progression typically found in clinical research protocols (Figure~\ref{fig:workflow}). Earlier steps can be revisited if needed.
 
-\begin{figure*}[htbp]
+\begin{figure}[htbp]
 \centering
 \scalebox{0.70}{
 \begin{tikzpicture}[node distance=2.5cm, auto]
@@ -208,7 +201,7 @@ The interface employs a tabbed navigation system that guides users through the e
         mystep/.style={
             rectangle, rounded corners,
             minimum width=3.6cm, minimum height=1cm,
-            text centered, font=\scriptsize,
+            text centered, font=\small,
             text width=3.3cm, align=center,
             line width=1.2pt
         },
@@ -222,47 +215,49 @@ The interface employs a tabbed navigation system that guides users through the e
     \node (status) [mystep, fill=cyan!20, draw=cyan!70, right=1.0cm of start] 
         {\textbf{Status}\\[2mm] Automatic exploration};
 
-    \node (primary)[mystep, fill=teal!20, draw=teal!70, right=1.0cm of status] 
+    % ---------- ROW 2 ----------
+    \node (primary)[mystep, fill=teal!20, draw=teal!70, below=2cm of start] 
         {\textbf{Primary Variable}\\[2mm] Target selection};
 
-    % ---------- ROW 2 ----------
-    \node (criteria) [mystep, fill=yellow!20, draw=yellow!70, below=2cm of start] 
+    \node (criteria) [mystep, fill=yellow!20, draw=yellow!70, right=1.0cm of primary] 
         {\textbf{Criteria}\\[2mm] Inclusion/exclusion};
 
-    \node (settings) [mystep, fill=orange!20, draw=orange!70, right=1.0cm of criteria] 
+    % ---------- ROW 3 ----------
+    \node (settings) [mystep, fill=orange!20, draw=orange!70, below=2cm of primary] 
         {\textbf{Settings}\\[2mm] Metrics \&\\ hyperparameters};
 
     \node (process)  [mystep, fill=red!20, draw=red!70, right=1.0cm of settings] 
         {\textbf{Process}\\[2mm] Model training};
 
-    \node (results)  [mystep, fill=green!20, draw=green!70, right=1.0cm of process] 
+    % ---------- ROW 4 ----------
+    \node (results)  [mystep, fill=green!20, draw=green!70, below=2cm of settings, xshift=2.3cm] 
         {\textbf{Results}\\[2mm] Interactive charts};
 
     % ---------- ARROWS ----------
     \draw [arrow] (start) -- (status);
-    \draw [arrow] (status) -- (primary);
+    \draw [arrow] (status.south) -- (primary.north);
 
-    \draw [arrow] (primary.south) -- (criteria.north);
+    \draw [arrow] (primary) -- (criteria);
+    \draw [arrow] (criteria.south) -- (settings.north);
 
-    \draw [arrow] (criteria) -- (settings);
     \draw [arrow] (settings) -- (process);
-    \draw [arrow] (process) -- (results);
+    \draw [arrow] (process.south) -- (results.north);
 
 \end{tikzpicture}
 }
 \caption{Clinical machine learning workflow.}
 \label{fig:workflow}
-\end{figure*}
-
+\end{figure}
 
 The workflow itself comprises seven steps: starting with project creation and dataset loading, followed by automatic dataset exploration for descriptive statistics, missing value analysis, and outcome variable identification. Users then select the target variable, with automatic detection of whether the task is classification or regression. Inclusion and exclusion criteria are defined through an intuitive interface, after which evaluation metrics, missing data strategies, and hyperparameter settings are configured. Model training is executed with real-time progress monitoring, and results are presented in a written way and through charts and confusion matrices (Figure~\ref{fig:tab-based_interface}).
 
-\begin{figure*}[ht]
+
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=\textwidth]{img/Captura de pantalla 2025-11-26 111307.png}
+    \includegraphics[width=\columnwidth]{img/Captura de pantalla 2025-11-26 111307.png}
     \caption{Training outcomes and model performance.}
     \label{fig:tab-based_interface}
-\end{figure*}
+\end{figure}
 
 
 \section{Alignment with Human-Guided ML}
@@ -270,54 +265,56 @@ The workflow itself comprises seven steps: starting with project creation and da
 
 To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria, which provide a structured framework to assess how domain experts can guide data use, model development, and result interpretation in interactive ML systems. Applying these criteria highlights both the strengths and limitations of \gls{hamelin} in supporting clinical researchers (Table \ref{tab:hgml_alignment}).
 
-\gls{hamelin} offers strong support for data-centric tasks: clinicians can select variables, define inclusion/exclusion rules, and create protocol-consistent subpopulations. Temporal framing of study phases and basic missing-value handling are partially supported, but interactive data augmentation, active labeling, and fine-grained train/test split control are unsupported.
-
-Regarding model development, \gls{hamelin} relies on the underlying \gls{automl} backend for model-family selection and hyperparameter tuning, giving users high-level control over preprocessing and training options but not detailed model choices or step-wise comparisons. In model interpretation, domain-relevant metrics are fully available, though intermediate artefacts and systematic comparisons across models or preprocessing variants are lacking. Overall, \gls{hamelin} empowers clinicians in data-centric decisions, while model-centric flexibility and advanced comparison features need further development.
-
-\begin{table*}[t]
+\begin{table}[t]
 \caption{Mapping between \gls{hgml} tasks \cite{gil2019towards} and \gls{hamelin} clinical functionalities.}
 \label{tab:hgml_alignment}
 \centering
 \scriptsize
-\renewcommand{\arraystretch}{1.075}
+\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}l l@{}}
 \toprule
 \textbf{HGML task} & \textbf{Where in HAMELIN} \\
 \midrule
 \multicolumn{2}{l}{\textbf{Data Use}} \\
 \midrule
-\parbox[t]{0.45\textwidth}{[VS1] Variable selection (prioritise variables)} & \parbox[t]{0.55\textwidth}{\emph{Primary Variable}, \emph{Settings}} \\
-\parbox[t]{0.45\textwidth}{[VS2] Create new variables from existing ones} & \parbox[t]{0.55\textwidth}{-- (external preprocessing)} \\
-\parbox[t]{0.45\textwidth}{[VS3] Change temporal / spatial framing of variables} & \parbox[t]{0.55\textwidth}{\emph{Criteria}; protocol phases} \\
-\parbox[t]{0.45\textwidth}{[VS4] Impute missing values using other variables} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
-\parbox[t]{0.45\textwidth}{[VS5] Augment data using new sources} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[VR1] Require inclusion / exclusion of variables} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
-\parbox[t]{0.45\textwidth}{[IS1] Select instances to label / annotate} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[IS2] Select subpopulation of instances} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
-\parbox[t]{0.45\textwidth}{[IS3] Remove specific instances} & \parbox[t]{0.55\textwidth}{\emph{Criteria}} \\
-\parbox[t]{0.45\textwidth}{[IS4] Define train/test split and cross-validation} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\columnwidth}{[VS1] Variable selection (prioritise variables)} & \parbox[t]{0.55\columnwidth}{\emph{Primary Variable}, \emph{Settings}} \\
+\parbox[t]{0.45\columnwidth}{[VS2] Create new variables from existing ones} & \parbox[t]{0.55\columnwidth}{-- (external preprocessing)} \\
+\parbox[t]{0.45\columnwidth}{[VS3] Change temporal / spatial framing of variables} & \parbox[t]{0.55\columnwidth}{\emph{Criteria}; protocol phases} \\
+\parbox[t]{0.45\columnwidth}{[VS4] Impute missing values using other variables} & \parbox[t]{0.55\columnwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\columnwidth}{[VS5] Augment data using new sources} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[VR1] Require inclusion / exclusion of variables} & \parbox[t]{0.55\columnwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\columnwidth}{[IS1] Select instances to label / annotate} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[IS2] Select subpopulation of instances} & \parbox[t]{0.55\columnwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\columnwidth}{[IS3] Remove specific instances} & \parbox[t]{0.55\columnwidth}{\emph{Criteria}} \\
+\parbox[t]{0.45\columnwidth}{[IS4] Define train/test split and cross-validation} & \parbox[t]{0.55\columnwidth}{\emph{Settings}} \\
 \midrule
 \multicolumn{2}{l}{\textbf{Model Development}} \\
 \midrule
-\parbox[t]{0.45\textwidth}{[MS1] Request a specific type of model} & \parbox[t]{0.55\textwidth}{\emph{AutoML Layer} (Ludwig)} \\
-\parbox[t]{0.45\textwidth}{[MS2] Replace the model in a prior solution} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[PT1] Request specific parameter values} & \parbox[t]{0.55\textwidth}{\emph{Settings}, Ludwig HP search} \\
-\parbox[t]{0.45\textwidth}{[SD1] Request specific data-preparation steps} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
-\parbox[t]{0.45\textwidth}{[SD2] Replace a data-preparation step} & \parbox[t]{0.55\textwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\columnwidth}{[MS1] Request a specific type of model} & \parbox[t]{0.55\columnwidth}{\emph{AutoML Layer} (Ludwig)} \\
+\parbox[t]{0.45\columnwidth}{[MS2] Replace the model in a prior solution} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[PT1] Request specific parameter values} & \parbox[t]{0.55\columnwidth}{\emph{Settings}, Ludwig HP search} \\
+\parbox[t]{0.45\columnwidth}{[SD1] Request specific data-preparation steps} & \parbox[t]{0.55\columnwidth}{\emph{Settings}} \\
+\parbox[t]{0.45\columnwidth}{[SD2] Replace a data-preparation step} & \parbox[t]{0.55\columnwidth}{\emph{Settings}} \\
 \midrule
 \multicolumn{2}{l}{\textbf{Model Interpretation and Comparison}} \\
 \midrule
-\parbox[t]{0.45\textwidth}{[QC1] Request quantities of interest / metrics} & \parbox[t]{0.55\textwidth}{\emph{Results}} \\
-\parbox[t]{0.45\textwidth}{[QC2] Request intermediate results} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[MC1] Compare solutions with different model types} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[MC2] Compare solutions on different subsets of instances} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[MC3] Compare solutions with same model but different data prep} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[MC4] Compare solutions with same model but different parameters} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[MC5] Compare two models with all other steps equal} & \parbox[t]{0.55\textwidth}{--} \\
-\parbox[t]{0.45\textwidth}{[PC1] Several solutions with same model and varying parameter ranges} & \parbox[t]{0.55\textwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[QC1] Request quantities of interest / metrics} & \parbox[t]{0.55\columnwidth}{\emph{Results}} \\
+\parbox[t]{0.45\columnwidth}{[QC2] Request intermediate results} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[MC1] Compare solutions with different model types} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[MC2] Compare solutions on different subsets of instances} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[MC3] Compare solutions with same model but different data prep} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[MC4] Compare solutions with same model but different parameters} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[MC5] Compare two models with all other steps equal} & \parbox[t]{0.55\columnwidth}{--} \\
+\parbox[t]{0.45\columnwidth}{[PC1] Several solutions with same model and varying parameter ranges} & \parbox[t]{0.55\columnwidth}{--} \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
+
+
+\gls{hamelin} offers strong support for data-centric tasks: clinicians can select variables, define inclusion/exclusion rules, and create protocol-consistent subpopulations. Temporal framing of study phases and basic missing-value handling are partially supported, but interactive data augmentation, active labeling, and fine-grained train/test split control are unsupported.
+
+Regarding model development, \gls{hamelin} relies on the underlying \gls{automl} backend for model-family selection and hyperparameter tuning, giving users high-level control over preprocessing and training options but not detailed model choices or step-wise comparisons. In model interpretation, domain-relevant metrics are fully available, though intermediate artefacts and systematic comparisons across models or preprocessing variants are lacking. Overall, \gls{hamelin} empowers clinicians in data-centric decisions, while model-centric flexibility and advanced comparison features need further development.
+
 
 
 \section{Conclusions}
@@ -327,10 +324,6 @@ This work presents a tool that partially satisfies the criteria for \gls{hgml}, 
 
 The evaluation indicates strong support for data-centric operations, including variable selection, subpopulation definition, and inclusion/exclusion logic. Nevertheless, model-centric tasks, such as explicit model family selection, hyperparameter specification, and systematic comparison of alternative solutions, remain partially constrained. Ongoing development aims to extend interactive control over these stages, incorporate advanced feature engineering, provenance tracking, and multi-source data integration, moving the system toward full \gls{hgml} where domain expertise can guide all aspects of the modeling process.
 
-
-\section*{Acknowledgment}
-
-This work has been supported by grant PID2023-146243OB-I00 funded by MICIU/AEI/10.13039/501100011033 and by ``ERDF/EU''.
 
 \begin{footnotesize}
 
