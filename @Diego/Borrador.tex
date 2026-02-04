@@ -1,0 +1,73 @@
+\section{Design Methodology}  
+\label{sec:design_methodology}  
+  
+The design of \gls{hamelin} followed principles of participatory design and user-centered design, involving \glspl{crp} throughout the process. This section describes the methodology used to translate clinical research practices into interface design principles.  
+  
+\subsection{Analysis of Clinical Protocols}  
+\label{subsec:protocol_analysis}  
+  
+Four clinical protocols provided by \glspl{crp} at the Clinical Trials Agency of IDIVAL were analyzed in detail:  
+  
+\begin{itemize}  
+    \item \textbf{COLCHI-COVID}: A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).  
+      
+    \item \textbf{EPA-Registro COVID-19}: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy), and outcomes (hospital discharge, ICU admission, death).  
+      
+    \item \textbf{UPPS (Pressure Injuries in Neurosurgery)}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).  
+      
+    \item \textbf{VACAB-2022}: A randomized clinical trial evaluating the efficacy of mucosal bacterial vaccines (autovaccines) compared to suppressive antibiotic therapy in patients with hip or knee prosthesis infections. The protocol defined primary endpoints (infection recurrence at 12 months), secondary endpoints (quality of life, adverse events), and inclusion/exclusion criteria (confirmed prosthesis infection, no immunosuppression, no allergy to vaccine components).  
+\end{itemize}  
+  
+By examining how \glspl{crp} organize data, define variables, specify inclusion/exclusion criteria, and formulate research questions in these protocols, recurring patterns and requirements were identified. These patterns informed the design of the interface, ensuring that the system's terminology and workflow align with actual clinical research practices.  
+  
+\subsection{Structured Meetings with Clinical Research Professionals}  
+\label{subsec:crp_meetings}  
+  
+Two structured meetings were conducted with \glspl{crp} to elicit requirements and gather feedback on initial mockups. The first meeting focused on understanding how \glspl{crp} organize and prepare clinical data. Key insights included:  
+  
+\begin{itemize}  
+    \item \textbf{Project context}: \glspl{crp} wanted to see metadata about the project (project name, principal investigator, study dates, ethical approvals, objectives) before working with data. This provides context for all subsequent decisions and ensures that the analysis aligns with the research question.  
+      
+    \item \textbf{Variable classification}: \glspl{crp} routinely classify variables into categories: demographics (age, sex), clinical measurements (weight, height, BMI), exposures (treatments, interventions), outcomes (endpoints), and inclusion/exclusion criteria. This classification is not arbitrary but reflects the role of each variable in the research design.  
+      
+    \item \textbf{Flexibility}: \glspl{crp} emphasized that variable selection and inclusion criteria vary widely across studies. The system must accommodate this variability rather than imposing a rigid structure.  
+\end{itemize}  
+  
+The second meeting presented initial mockups and gathered feedback on the overall workflow, terminology, and visual design. Key insights included:  
+  
+\begin{itemize}  
+    \item \textbf{Terminology}: \glspl{crp} preferred terms familiar from clinical trial protocols, such as ``primary variable'' (for the target variable) over statistical jargon like ``dependent variable'' or ``target variable''.  
+      
+    \item \textbf{Recruitment tracking}: \glspl{crp} requested a feature to track patient recruitment over time and to estimate when the target sample size will be reached. This is critical for ongoing studies, as it helps researchers plan data collection and anticipate study completion.  
+      
+    \item \textbf{Model transparency}: \glspl{crp} wanted to know which \gls{ml} algorithm (Random Forest, Gradient Boosting, etc.) was used for each model, to assess the appropriateness of the method for their research question.  
+      
+    \item \textbf{Table 1 generation}: \glspl{crp} noted that clinical papers typically include a ``Table 1'' summarizing baseline characteristics of the study population, stratified by outcome or treatment group. They requested that the system generate such a table automatically.  
+      
+    \item \textbf{Predictive vs. descriptive analysis}: \glspl{crp} emphasized that \gls{hamelin} should focus on predictive modeling, not just descriptive statistics. While descriptive analysis is important for understanding the data, the primary goal is to build models that can predict outcomes for new patients.  
+\end{itemize}  
+  
+These meetings illustrate the value of iterative, participatory design. By involving \glspl{crp} throughout the design process, the system was aligned with actual clinical research practices.  
+  
+\subsection{Mockup Development and Refinement}  
+\label{subsec:mockup_development}  
+  
+Initial mockups were created using Axure RP 10, a wireframing tool, and presented to \glspl{crp} in the structured meetings. The mockups depicted a tab-based interface that guides users through the \gls{ml} pipeline in discrete steps. Each tab corresponds to a phase of the workflow: Start (project creation and dataset loading), Status (automatic dataset exploration), Primary Variable (target selection), Criteria (inclusion/exclusion logic), Settings (configuration of metrics and hyperparameters), Process (model training), and Results (presentation of model performance).  
+  
+This structure mirrors the logical progression of clinical research: define the question, prepare the data, specify the population, configure the analysis, execute the analysis, interpret the results. The mockups incorporated several mechanisms designed to support protocol-aware interaction:  
+  
+\begin{itemize}  
+    \item \textbf{Variable classification}: Upon loading a dataset, the system prompts the user to classify variables into categories (demographics, clinical measurements, exposures, outcomes, inclusion/exclusion criteria). This classification informs subsequent steps.  
+      
+    \item \textbf{Temporal phase assignment}: For longitudinal studies, the system allows users to define protocol phases (screening, baseline, intervention, follow-up) and to assign variables to phases. This prevents data leakage.  
+      
+    \item \textbf{Inclusion/exclusion logic builder}: The Criteria tab provides an intuitive interface for specifying inclusion and exclusion rules using dropdown menus and logical operators (AND, OR, NOT) without writing code.  
+      
+    \item \textbf{Hypothesis-driven variable selection}: The Settings tab allows users to mark variables as ``priority'' (based on clinical hypotheses) or ``exploratory'' (to be considered by the system).  
+      
+    \item \textbf{Custom evaluation metrics}: Users can select from a menu of standard metrics and specify which metric is most important for their research question.  
+      
+    \item \textbf{Interpretable visualizations}: The Results tab presents model outputs using visualizations familiar to \glspl{crp}: confusion matrices, ROC curves, feature importance plots.  
+\end{itemize}  
+  
+Feedback from \glspl{crp} led to several refinements, including the addition of a project directory feature, a recruitment graph in the Status tab, information about the \gls{ml} algorithm used in the Results tab, and automatic generation of Table 1. These refinements demonstrate the value of iterative design.
