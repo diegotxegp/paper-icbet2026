@@ -60,7 +60,7 @@ Clinical research faces a significant gap between advanced machine learning capa
 \end{abstract}
 
 \begin{IEEEkeywords}
-machine learning for healthcare, automated machine learning, human-guided machine learning, clinical research, protocol-aware systems
+automated machine learning, human-guided machine learning, healthcare, clinical research, protocol-aware systems
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -73,7 +73,7 @@ The rapid integration of \gls{ai} into medicine faces a key challenge: clinician
 To address these limitations, we present \gls{hamelin}, a no-code, protocol-aware \gls{automl} platform grounded in \gls{hgml} principles, which emphasize integrating human expertise throughout the \gls{ml} pipeline. \gls{hamelin} provides a collaborative environment where clinicians and data scientists work together using a shared language. By explicitly defining variables, distinguishing endpoints from exposures, and separating interventions from covariates, \gls{hamelin} facilitates the development of predictive models that are both clinically coherent and aligned with the structural requirements of research designs. This approach effectively bridges the gap between technical expertise and clinical domain.
 
 % Revisar
-The development of \gls{hamelin} followed a participatory design approach, involving \glspl{crp} from the Clinical Trials Agency of IDIVAL (Marqu\'es de Valdecilla University Hospital) throughout the design and refinement process. Four real clinical protocols served as use cases: COLCHI-COVID (a clinical trial evaluating colchicine in COVID-19 patients), EPA-Registro COVID-19 (a patient registry), UPPS (an observational study on pressure injuries in neurosurgery), and VACAB-2022 (a clinical trial on bacterial vaccines for prosthesis infections). These protocols grounded the interface design in authentic clinical research scenarios and ensured that the system's terminology, workflow, and validation mechanisms align with actual clinical practice.
+The development of \gls{hamelin} followed a participatory design approach, involving \glspl{crp} from the Clinical Trials Agency of IDIVAL (Marqu\'es de Valdecilla University Hospital) throughout the design and refinement process. Four real clinical protocols served as use cases: EPA COVID-19 (a patient registry), UPS (an observational study on pressure injuries in neurosurgery), COLCHI-COVID (a clinical trial evaluating colchicine in COVID-19 patients), and VACAB-2022 (a clinical trial on bacterial vaccines for prosthesis infections). These protocols grounded the interface design in authentic clinical research scenarios and ensured that the system's terminology, workflow, and validation mechanisms align with actual clinical practice.
 
 The remainder of this paper is organized as follows. Section~\ref{sec:background} provides background on clinical research methodologies, reviews related work in \gls{automl}, \gls{hcai}, \gls{hgml}, and introduces Ludwig as the underlying \gls{automl} engine. Section~\ref{sec:application} presents the participatory design process, the architecture, and the user interface \gls{hamelin}, detailing each component of the tab-based workflow. Section~\ref{subsec:hgml_alignment} evaluates the system's alignment with \gls{hgml} criteria, identifying strengths and limitations. Section~\ref{sec:discussion} discusses design decisions, trade-offs, and implications for future \gls{automl} systems. Finally, Section~\ref{sec:conclusions} concludes the paper and outlines directions for future work.
 
@@ -140,9 +140,9 @@ involving \glspl{crp} throughout the design and refinement process.
 Four real clinical protocols were served as use cases to ground the interface design in authentic clinical research scenarios: one patient registry, one observational study, and two clinical trials. These are the details of each protocol that were considered to ensure the interface was tailored as closely as possible to the required needs.
   
 \begin{itemize}  
-    \item \textbf{EPA-Registro COVID-19}: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy), and outcomes (hospital discharge, ICU admission, death).
+    \item \textbf{EPA COVID-19}: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy), and outcomes (hospital discharge, ICU admission, death).
     
-    \item \textbf{UPPS (Pressure Injuries in Neurosurgery)}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).
+    \item \textbf{UPS}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).
     
     \item \textbf{COLCHI-COVID}: A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).
     
@@ -159,7 +159,7 @@ The design process was iterative and collaborative. Initial mockups were develop
     \label{fig:mockup_example}
 \end{figure*}
   
-\subsection{Architecture}
+\subsection{System Architecture}
 
 The system architecture follows a three-layer modular design (Figure~\ref{fig:system_architecture}). The interface layer provides a graphical environment for dataset loading, configuration, and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, configuration file generation, workflow coordination, and error handling. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, hyperparameter optimization, and evaluation.
   
