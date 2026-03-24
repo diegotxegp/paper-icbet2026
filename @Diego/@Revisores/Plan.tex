@@ -1,0 +1,78 @@
+Aquí está el plan detallado, comentario por comentario, con las acciones concretas que haría en el artículo:
+
+Comentario 1 — Motivación bien articulada, pero limitaciones importantes
+
+Acción: No requiere cambios estructurales, pero sí reforzar el abstract y la introducción para anticipar proactivamente las limitaciones y enmarcarlas como trabajo en progreso justificado. Añadiría una frase explícita tipo:
+
+"While HAMELIN does not introduce new modeling algorithms, its contribution lies in the protocol-aware interface design and the operationalization of HGML principles in a clinical context — an area where no prior system exists."
+
+Comentario 2 — Contribución es de diseño, no algorítmica
+
+Este es el comentario más delicado. El revisor tiene razón, pero la contribución sí es válida si se enmarca correctamente. Haría lo siguiente:
+
+2a. Reformular la contribución en la introducción con una lista explícita de contribuciones (contributions paragraph), algo habitual en papers IEEE:
+
+"The contributions of this paper are: (1) a protocol-aware interface design grounded in real clinical protocols; (2) a mapping between clinical research concepts and ML pipeline stages; (3) an operationalization of HGML criteria in a clinical AutoML system; (4) a participatory design methodology involving clinical research professionals."
+
+2b. Añadir una comparativa con herramientas existentes en la sección de Related Work, en forma de tabla, mostrando que ninguna herramienta existente cubre las dimensiones que HAMELIN cubre (protocol-awareness, HGML alignment, clinical terminology, inclusion/exclusion criteria support). Esto refuerza la novedad sin necesidad de contribución algorítmica.
+
+Feature	AutoGluon	H2O	Azure AutoML	HAMELIN
+Protocol-aware	✗	✗	✗	✓
+Inclusion/exclusion criteria	✗	✗	✗	✓
+Clinical terminology	✗	✗	Partial	✓
+HGML alignment	✗	✗	✗	Partial
+No-code for clinicians	Partial	Partial	✓	✓
+
+2c. En la sección de Discussion, añadir un párrafo que defienda explícitamente el valor de las contribuciones de diseño en sistemas HCI/HCAI, citando trabajos que avalen este tipo de contribución (e.g., trabajos de Shneiderman sobre HCAI, o papers de CHI/CSCW que son puramente de diseño).
+
+Comentario 3 — No hay estudio de usuario formal
+
+Este es el comentario más difícil de resolver si no se tiene tiempo de hacer un estudio nuevo. Hay dos opciones:
+
+Opción A (ideal): Realizar un estudio de usabilidad estructurado con los CRPs ya involucrados, usando un cuestionario estándar como el SUS (System Usability Scale) o el NASA-TLX. Con 4-5 participantes ya es publicable en un paper de diseño de sistemas. Presentar los resultados en una nueva sección o subsección.
+
+Opción B (si no hay tiempo): Reconvertir la evidencia existente en una evaluación experta estructurada. Documentar las sesiones de feedback con los CRPs de forma sistemática: número de sesiones, participantes, tipo de feedback recibido, cambios realizados. Añadir una tabla o figura que muestre las iteraciones de diseño y cómo el feedback se tradujo en cambios concretos. Esto no es un estudio de usuario formal, pero es evidencia sistemática y honesta.
+
+En cualquier caso, añadir en Limitations una frase que reconozca explícitamente la ausencia de un estudio de usuario formal y lo proponga como trabajo futuro.
+
+Comentario 4 — Diseño participativo anecdótico, no sistemático
+
+Complementario al comentario 3. Acciones concretas:
+
+4a. Añadir una tabla de iteraciones de diseño en la sección 3.1 (Participatory Design Process) con columnas como: Iteration, Protocol used, Participants, Key findings, Changes made. Esto convierte la narrativa anecdótica en evidencia estructurada.
+
+4b. Describir el proceso con más rigor metodológico: número exacto de sesiones, duración, perfil de los participantes (sin datos personales), método de recogida de feedback (notas, grabaciones, formularios), y criterios de convergencia del diseño.
+
+4c. Si se usaron los mockups para validación, describir explícitamente qué se validó, cómo se recogió el feedback y qué cambios resultaron. La Figura 2 (mockup) ya está, pero necesita más contexto narrativo.
+
+Comentario 5 — No sigue las guías de formato IEEE
+
+Acciones de formato a revisar sistemáticamente:
+
+5a. Estructura del documento: Verificar que el orden de secciones sigue el estándar IEEE: Abstract → Keywords → Introduction → Background/Related Work → Methodology → Results/Evaluation → Discussion → Conclusions → References.
+
+5b. Figuras y tablas:
+
+Las figuras deben tener numeración y captions en la parte inferior.
+Las tablas deben tener captions en la parte superior (actualmente la Tabla 1 parece correcta, pero verificar).
+Las figuras [h], [H], [htbp] deben revisarse; IEEE prefiere [t] o [b] para posicionamiento.
+
+5c. Referencias: IEEE usa numeración entre corchetes [1], [2]... El estilo unsrt de BibTeX es compatible, pero verificar que no haya referencias con formato incorrecto (URLs sin formato, años faltantes, etc.).
+
+5d. Columnas y márgenes: Verificar que el documento usa "documentclass[conference]{IEEEtran}" correctamente y que no hay elementos que rompan el layout de doble columna (las figuras figure* son correctas para ancho completo, pero verificar que no causen problemas de posicionamiento).
+
+5e. Paquetes no estándar: tikz, booktabs, multirow, float son aceptables, pero \scalebox dentro de figuras puede causar problemas de escala en la versión final. Considerar rediseñar las figuras TikZ con tamaños absolutos en lugar de escalado relativo.
+
+5f. Sección de agradecimientos: IEEE requiere una sección \section*{Acknowledgment} antes de las referencias, no un \thanks{} en el título (aunque \thanks también es válido en IEEEtran, es preferible la sección explícita para visibilidad).
+
+5g. Comentarios % Revisar: Eliminar todos los comentarios internos del código LaTeX antes de la sumisión final.
+
+Resumen de prioridades
+Prioridad	Comentario	Esfuerzo estimado
+�� Alta	C3: Añadir evaluación estructurada con CRPs	Alto
+�� Alta	C2: Añadir tabla comparativa y párrafo de contribuciones	Medio
+�� Media	C4: Estructurar el proceso participativo con tabla de iteraciones	Medio
+�� Media	C5: Revisión de formato IEEE	Bajo-Medio
+�� Baja	C1: Reforzar framing en abstract/intro	Bajo
+
+¿Quieres que empiece a redactar los cambios concretos en el LaTeX para alguno de estos puntos?
