@@ -1,4 +1,4 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,onecolumn]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
@@ -11,7 +11,6 @@
 \usepackage[acronym]{glossaries}
 \usepackage{tikz}
 \usetikzlibrary{positioning, shadows, fit}
-\usepackage{float}
 \usepackage{booktabs}
 \usepackage{url}
 \usepackage{multirow}
@@ -27,25 +26,25 @@
 \thanks{This work has been supported by grant  PID2023-146243OB-I00 funded by MICIU/AEI/10.13039/501100011033 and by ``ERDF/EU''.}
 }
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Diego Garc\'ia-Prieto}
+\author{\IEEEauthorblockN{Diego Garc\'ia-Prieto}
 \IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
 \textit{University of Cantabria}\\
 Santander, Spain \\
 diego.garciaprieto@unican.es}
 \and
-\IEEEauthorblockN{2\textsuperscript{nd} Camilo Palazuelos}
+\IEEEauthorblockN{Camilo Palazuelos}
 \IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
 \textit{University of Cantabria}\\
 Santander, Spain \\
 camilo.palazuelos@unican.es}
 \and
-\IEEEauthorblockN{3\textsuperscript{rd} Rafael Duque}
+\IEEEauthorblockN{Rafael Duque}
 \IEEEauthorblockA{\textit{Dept. of Mathematics, Statistics and Computer Science} \\
 \textit{University of Cantabria}\\
 Santander, Spain \\
 rafael.duque@unican.es}
 \and
-\IEEEauthorblockN{4\textsuperscript{th} Luc\'ia Lav\'in-Alconero}
+\IEEEauthorblockN{Luc\'ia Lav\'in-Alconero}
 \IEEEauthorblockA{\textit{Clinical Trials Agency Valdecilla-IDIVAL} \\
 \textit{Marqu\'es de Valdecilla University Hospital}\\
 Santander, Spain \\
@@ -60,7 +59,7 @@ Clinical research faces a significant gap between advanced machine learning capa
 \end{abstract}
 
 \begin{IEEEkeywords}
-automated machine learning, human-guided machine learning, healthcare, clinical research, protocol-aware systems
+Automated Machine Learning, Human-Guided Machine Learning, Healthcare, Clinical Research, Protocol-Aware Systems
 \end{IEEEkeywords}
 
 \section{Introduction}
@@ -70,7 +69,7 @@ The rapid integration of \gls{ai} into medicine faces a key challenge: clinician
 
 \Gls{automl} platforms have emerged as promising solutions by automating complex tasks such as feature engineering, algorithm selection, and hyperparameter optimization, enabling users without extensive programming expertise to build predictive models \cite{karmaker2021automl}. However, current tools fail to bridge this gap for clinical researchers \cite{waring2020automated}. They treat datasets as generic matrices, ignoring structures inherent to clinical research, such as patient registries, observational studies, and clinical trials. They are not protocol-aware, making it difficult to distinguish between variables that define study populations (inclusion criteria) and those measuring outcomes (endpoints). Moreover, their black-box nature complicates interpretation by researchers. Therefore, incorporating domain knowledge into the modeling process is essential \cite{sirocchi2024medical}.
 
-To address these limitations, we present \gls{hamelin}, a no-code, protocol-aware \gls{automl} platform grounded in \gls{hgml} principles, which emphasize integrating human expertise throughout the \gls{ml} pipeline. \gls{hamelin} provides a collaborative environment where clinicians and data scientists work together using a shared language. By explicitly defining variables, distinguishing endpoints from exposures, and separating interventions from covariates, \gls{hamelin} facilitates the development of predictive models that are both clinically coherent and aligned with the structural requirements of research designs. This approach effectively bridges the gap between technical expertise and clinical domain.
+To address these limitations, we present \gls{hamelin}, a no-code, protocol-aware \gls{automl} platform grounded in \gls{hgml} principles, which emphasize integrating human expertise throughout the \gls{ml} pipeline. Its contribution lies in the design of a protocol-aware interface and the operationalization of \gls{hgml} principles in a clinical context, an area where, to the best of our knowledge, no prior system exists. \gls{hamelin} provides a collaborative environment where clinicians and data scientists work together using a shared language. By explicitly defining variables, distinguishing endpoints from exposures, and separating interventions from covariates, \gls{hamelin} facilitates the development of predictive models that are both clinically coherent and aligned with the structural requirements of research designs. This approach effectively bridges the gap between technical expertise and clinical domain.
 
 % Revisar
 The development of \gls{hamelin} followed a participatory design approach, involving \glspl{crp} from the Clinical Trials Agency of IDIVAL (Marqu\'es de Valdecilla University Hospital) throughout the design and refinement process. Four real clinical protocols served as use cases: EPA COVID-19 (a patient registry), UPS (an observational study on pressure injuries in neurosurgery), COLCHI-COVID (a clinical trial evaluating colchicine in COVID-19 patients), and VACAB-2022 (a clinical trial on bacterial vaccines for prosthesis infections). These protocols grounded the interface design in authentic clinical research scenarios and ensured that the system's terminology, workflow, and validation mechanisms align with actual clinical practice.
@@ -96,7 +95,7 @@ These distinctions impose specific requirements on predictive modeling that gene
 
 Addressing this gap requires rethinking the relationship between automation and human expertise. \Gls{hcai} \cite{shneiderman2022human} emphasizes designing \gls{ai} systems that augment human capabilities rather than replace them, prioritizing human control, transparency, and trust. The \gls{hcai} framework (Figure \ref{fig:HCAI_dimensions}) proposes a two-dimensional design space: the level of automation (from fully manual to fully autonomous) and the level of human control (from high human control to high computer control). Effective \gls{hcai} systems balance these dimensions, providing automation where appropriate while preserving meaningful human oversight. In clinical research, this balance is particularly critical: while automation can accelerate model development, clinicians must retain control over decisions that affect patient safety, study validity, and regulatory compliance. \gls{hcai} principles thus guide the design of \gls{hamelin} by ensuring that automation serves \glspl{crp} rather than obscuring the modeling process.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \scalebox{0.7}{
 \begin{tikzpicture}
@@ -165,7 +164,7 @@ The system architecture follows a three-layer modular design (Figure~\ref{fig:sy
   
 This modular architecture ensures that the interface logic is separated from the \gls{automl} engine. In principle, Ludwig could be replaced with another \gls{automl} framework without requiring changes to the interface, although some adaptation of the Core Logic Layer would be necessary.
   
-\begin{figure}[H]
+\begin{figure}[ht]
 \centering
 \scalebox{0.75}{
 \begin{tikzpicture}[
@@ -245,7 +244,7 @@ This modular architecture ensures that the interface logic is separated from the
 
 \end{tikzpicture}
 }
-\caption{Layered system architecture of HAMELIN}
+\caption{Layered system architecture of HAMELIN.}
 \label{fig:system_architecture}
 \end{figure}
   
@@ -253,7 +252,7 @@ This modular architecture ensures that the interface logic is separated from the
   
 The interface employs a tabbed navigation system that guides users through the entire \gls{ml} pipeline. This design provides clear waypoints while maintaining the analytical context, with each tab representing a distinct phase that follows the logical progression typically found in clinical research protocols. A key feature of \gls{hgml} is the ability to refine the model iteratively based on initial results. The \gls{hamelin} interface supports this through a reconfiguration mechanism that allows users to revisit earlier steps and modify their choices based on emerging insights. After reviewing results, users can return to previous tabs to adjust the target variable, refine inclusion/exclusion criteria, select alternative missing data strategies, modify hyperparameter search spaces, or choose different evaluation metrics. Each modification triggers a model re-training cycle with updated results, enabling \glspl{crp} to explore the modeling space systematically, guided by clinical intuition and domain knowledge.
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
 \centering
 \scalebox{0.70}{
 \begin{tikzpicture}[node distance=2.5cm, auto]
@@ -388,26 +387,26 @@ To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria \cite{gil2019toward
   
 \subsection{Data Use}  
   
-\gls{hamelin} offers strong support for data-centric tasks. Clinicians can select variables (VS1) through the Primary Variable and Settings tabs, although without yet prioritizing variables based on clinical hypotheses. They can change temporal framing of variables (VS3) through the Criteria tab by defining protocol phases, though this feature is still under development. They can impute missing values (VS4) using Ludwig's comprehensive set of strategies, exposed in the Settings tab with clinical explanations. They can require inclusion or exclusion of variables (VR1) through the Criteria tab, which provides an intuitive rule builder for specifying complex inclusion/exclusion logic. They can select subpopulations of instances (IS2) and remove specific instances (IS3) through the same Criteria tab.
+\gls{hamelin} offers strong support for data-centric tasks. Clinicians can select variables [VS1] through the Primary Variable and Settings tabs, although without yet prioritizing variables based on clinical hypotheses. They can change temporal framing of variables [VS3] through the Criteria tab by defining protocol phases, though this feature is still under development. They can impute missing values [VS4] using Ludwig's comprehensive set of strategies, exposed in the Settings tab with clinical explanations. They can require inclusion or exclusion of variables [VR1] through the Criteria tab, which provides an intuitive rule builder for specifying complex inclusion/exclusion logic. They can select subpopulations of instances [IS2] and remove specific instances [IS3] through the same Criteria tab.
   
-However, some data-centric tasks are not yet supported. Users cannot create new variables from existing ones (VS2) within the interface; this must be done through external preprocessing. They cannot augment data using new sources (VS5). They cannot select instances to label or annotate (IS1), as \gls{hamelin} assumes that all data are already labeled. And they cannot define train/test split and cross-validation (IS4) through the Settings tab, choosing from k-fold, leave-one-out, or temporal split strategies.
+However, some data-centric tasks are not yet supported. Users cannot create new variables from existing ones [VS2] within the interface; this must be done through external preprocessing. They cannot augment data using new sources [VS5]. They cannot select instances to label or annotate [IS1], as \gls{hamelin} assumes that all data are already labeled. And they cannot define train/test split and cross-validation [IS4] through the Settings tab, choosing from k-fold, leave-one-out, or temporal split strategies.
   
-\subsection{Model Development}  
+\subsection{Model Development}
   
-Regarding model development, \gls{hamelin} relies on the underlying \gls{automl} backend (Ludwig) for model selection and hyperparameter tuning. Users have high-level control over preprocessing and training options but not detailed control over model choices. Ludwig automatically selects the model family (MS1) based on data characteristics and task type, but users cannot explicitly request a specific model type (e.g., ``use only logistic regression''). Users cannot replace the model in a prior solution (MS2) or compare solutions with different model types (MC1) within the interface.  
+Regarding model development, \gls{hamelin} relies on the underlying \gls{automl} backend (Ludwig) for model selection and hyperparameter tuning. Users have high-level control over preprocessing and training options but not detailed control over model choices. Ludwig automatically selects the model family [MS1] based on data characteristics and task type, but users cannot explicitly request a specific model type (e.g., ``use only logistic regression''). Users cannot replace the model in a prior solution [MS2] or compare solutions with different model types [MC1] within the interface.
   
-Users can request specific parameter values (PT1) through the Settings tab by defining custom hyperparameter search spaces, though this requires some familiarity with hyperparameters. Users can request specific data-preparation steps (SD1) and replace data-preparation steps (SD2) through the Settings tab by choosing missing data strategies.  
+Users can request specific parameter values [PT1] through the Settings tab by defining custom hyperparameter search spaces, though this requires some familiarity with hyperparameters. Users can request specific data-preparation steps [SD1] and replace data-preparation steps [SD2] through the Settings tab by choosing missing data strategies.
   
-\subsection{Model Interpretation}  
+\subsection{Model Interpretation}
   
-In model interpretation, domain metrics are available. Users can request quantities of interest and metrics (QC1) through the Results tab, which presents accuracy, loss, area under the curve receiver operating characteristic (AUC\_ROC), mean absolute error (MAE), root mean squared error (RMSE). However, users cannot request intermediate results (QC2), such as the performance of models evaluated during hyperparameter search.
+In model interpretation, domain metrics are available. Users can request quantities of interest and metrics [QC1] through the Results tab, which presents accuracy, loss, area under the curve receiver operating characteristic (AUC\_ROC), mean absolute error (MAE), root mean squared error (RMSE). However, users cannot request intermediate results [QC2], such as the performance of models evaluated during hyperparameter search.
   
-Systematic comparison of alternative solutions is a significant limitation. Users cannot compare solutions with different model types (MC1), on different subsets of instances (MC2), with the same model but different data preparation (MC3), with the same model but different parameters (MC4), or two models with all other steps equal (MC5). They cannot generate several solutions with the same model and varying parameter ranges (PC1). These comparison tasks would require the system to maintain a history of all models trained and to provide interfaces for selecting and comparing them, which is not currently implemented.
+Systematic comparison of alternative solutions is a significant limitation. Users cannot compare solutions with different model types [MC1], on different subsets of instances [MC2], with the same model but different data preparation [MC3], with the same model but different parameters [MC4], or two models with all other steps equal [MC5]. They cannot generate several solutions with the same model and varying parameter ranges [PC1]. These comparison tasks would require the system to maintain a history of all models trained and to provide interfaces for selecting and comparing them, which is not currently implemented.
 
 
 \section{Discussion}  
 \label{sec:discussion}  
-The development of \gls{hamelin} demonstrates that protocol-aware \gls{automl} systems can help bridge the gap between advanced \gls{ml} techniques and their practical adoption in clinical research. By involving \glspl{crp} throughout the design process and grounding the interface in real clinical protocols, the system aligns more closely with established clinical research practices than generic \gls{automl} tools.  
+The development of \gls{hamelin} demonstrates that protocol-aware \gls{automl} systems can help bridge the gap between advanced \gls{ml} techniques and their practical adoption in clinical research. By involving \glspl{crp} throughout the design process and grounding the interface in real clinical protocols, the system aligns more closely with established clinical research practices than generic \gls{automl} tools.
   
 This alignment is the result of several design decisions. First, the use of clinical terminology (e.g., ``primary variable'' instead of ``target variable'', ``criteria'' instead of ``filters'') improves accessibility and reduces cognitive friction for \glspl{crp}. Second, the tab-based workflow reflects the logical sequence of a clinical study, formulating the research question, preparing data, defining the study population, configuring the analysis, executing the models, and interpreting the results, providing a familiar and intuitive structure. Third, explicit support for inclusion and exclusion criteria addresses a critical gap in existing \gls{automl} systems and ensures that models are trained on valid populations. Finally, exposing Ludwig's missing data strategies with clinically grounded explanations enables users to make informed decisions about a complex preprocessing step.  
   
@@ -427,7 +426,7 @@ The evaluation demonstrates strong support for data-centric operations, includin
 
 \begin{footnotesize}
 
-\bibliographystyle{unsrt}
+\bibliographystyle{IEEEtran}
 \bibliography{bibliography.bib}
 
 \end{footnotesize}
