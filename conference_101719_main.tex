@@ -22,7 +22,7 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Towards a Human-Guided AutoML Application for Democratizing Predictive Modeling in Clinical Research\\
+\title{Towards a Human-Guided AutoML Application for Democratizing Predictive Modeling\\ in Clinical Research\\
 \thanks{This work has been supported by grant  PID2023-146243OB-I00 funded by MICIU/AEI/10.13039/501100011033 and by ``ERDF/EU''.}
 }
 
@@ -66,11 +66,7 @@ Automated Machine Learning, Human-Guided Machine Learning, Healthcare, Clinical 
 \section{Introduction}
 \label{sec:introduction}
 
-The rapid integration of \gls{ai} into medicine has opened new opportunities for 
-clinical research, enabling the development of predictive models that can support 
-diagnosis, prognosis and treatment decisions \cite{sirocchi2024medical}. Among the 
-most promising developments in this area is \gls{automl}, which automates complex 
-tasks such as feature engineering, algorithm selection and hyperparameter optimization, enabling users without extensive programming expertise to build predictive models \cite{karmaker2021automl}. By reducing the technical barrier to entry, \gls{automl} platforms have the potential to democratize predictive modeling across a wide range of domains, including clinical research.
+The rapid integration of \gls{ai} into medicine has opened new opportunities for clinical research, enabling the development of predictive models that can support diagnosis, prognosis and treatment decisions \cite{sirocchi2024medical}. Among the most promising developments in this area is \gls{automl}, which automates complex tasks such as feature engineering, algorithm selection and hyperparameter optimization, enabling users without extensive programming expertise to build predictive models \cite{karmaker2021automl}. By reducing the technical barrier to entry, \gls{automl} platforms have the potential to democratize predictive modeling across a wide range of domains, including clinical research.
 
 Building on these advances, \gls{hgml} \cite{gil2019towards} proposes a more 
 collaborative paradigm: rather than fully automating the modeling process, it emphasizes integrating human expertise throughout the \gls{ml} pipeline, allowing domain experts to guide, validate, and refine key decisions at every stage. This distinction is particularly relevant in clinical research, where domain knowledge is not merely complementary but essential. Clinicians understand the temporal structure of study protocols, the hierarchy of endpoints, and the clinical meaning of variables, knowledge that cannot be inferred from data alone and that directly affects the validity of predictive models.
@@ -83,27 +79,71 @@ To address these limitations, we present \gls{hamelin}, a no-code, protocol-awar
 The contributions of this paper are fourfold: (1) a protocol-aware interface design grounded in real clinical protocols, bridging the gap between \gls{ml} pipelines and clinical research workflows; (2) a mapping between clinical research concepts, such as endpoint hierarchies, inclusion/exclusion criteria, and protocol phases, and \gls{ml} pipeline stages; (3) an operationalization and evaluation of \gls{hgml} 
 criteria in a clinical \gls{automl} system; and (4) a participatory design methodology involving \glspl{crp} throughout the entire development process.
 
-The remainder of this paper is organized as follows. Section~\ref{sec:background} 
-provides background on clinical research methodologies, reviews related work in \gls{automl}, \gls{hcai}, \gls{hgml}, and introduces Ludwig as the underlying \gls{automl} engine. Section~\ref{sec:application} presents the participatory design process, the architecture, and the user interface of \gls{hamelin}, detailing each component of the tab-based workflow. Section~\ref{subsec:hgml_alignment} evaluates the system's alignment with \gls{hgml} criteria, identifying strengths and limitations. Section~\ref{sec:discussion} discusses design decisions, trade-offs, and implications for future \gls{automl} systems. Finally, Section~\ref{sec:conclusions} concludes the paper and outlines directions for future work.
+The remainder of this paper is organized as follows. Section~\ref{sec:background} provides background on clinical research methodologies, reviews existing \gls{automl} systems and their limitations in clinical contexts, including Ludwig as the underlying \gls{automl} engine, and presents the \gls{hcai} and \gls{hgml} frameworks that guide the system design. Section~\ref{sec:application} presents the participatory design process, the architecture, and the user interface of \gls{hamelin}, detailing each component of the tab-based workflow. Section~\ref{subsec:hgml_alignment} evaluates the system's alignment with \gls{hgml} criteria, identifying strengths and limitations. Section~\ref{sec:discussion} discusses design decisions, trade-offs, and implications for future \gls{automl} systems. Finally, Section~\ref{sec:conclusions} concludes the paper and outlines directions for future work.
 
 
 \section{Background}
 \label{sec:background}
 
+Clinical research and \gls{ml} operate under fundamentally different assumptions. Understanding both their respective frameworks and the tools available for predictive modeling is essential to motivate the design of \gls{hamelin}. This section introduces the methodological foundations of clinical research, reviews existing \gls{automl} systems and their limitations in clinical contexts, and presents the human-centered frameworks that guide the design of the system.  
+  
 \subsection{Clinical Research Methodologies}  
 \label{subsec:clinical_research}
   
-Clinical research employs distinct frameworks or protocols for their research, each with specific design principles and analytical constraints \cite{kahlert2017control}. Patient registries collect long-term data from people who share the same medical condition. These registries are typically observational and aim to understand disease history, treatment patterns, and long-term outcomes. Observational studies test specific hypotheses about exposure-outcome associations without intervention, requiring careful adjustment for confounding variables and selection bias. Clinical trials evaluate interventions through randomization, blinding and rigorous protocols defining inclusion/exclusion criteria, temporal phases (screening, baseline, intervention, follow-up, endpoint evaluation) and endpoint hierarchies (primary endpoints for efficacy, secondary endpoints for safety and exploratory outcomes).
+Clinical research employs distinct frameworks or protocols for their research, each with specific design principles and analytical constraints \cite{kahlert2017control}. Patient registries collect long-term data from people who share the same medical condition. These registries are typically observational and aim to understand disease history, treatment patterns and long-term outcomes. Observational studies test specific hypotheses about exposure-outcome associations without intervention, requiring careful adjustment for confounding variables and selection bias. Clinical trials evaluate interventions through randomization, blinding and rigorous protocols defining inclusion/exclusion criteria, temporal phases (screening, baseline, intervention, follow-up, endpoint evaluation) and endpoint hierarchies (primary endpoints for efficacy, secondary endpoints for safety and exploratory outcomes).
 
 These distinctions impose specific requirements on predictive modeling that generic \gls{ml} pipelines ignore \cite{gao2025confounder}. For instance, in a clinical trial, variables collected during screening (e.g., blood pressure to determine eligibility) have different meanings than the same variables collected at follow-up (e.g., blood pressure as an outcome). A model trained without awareness of these temporal and semantic constraints risks producing invalid results, such as data leakage, using information collected after the outcome to predict that outcome, or confounding, failing to account for variables that influence both exposure and outcome.
 
-\subsection{Related Work}  
-\label{subsec:related_work}  
+\subsection{AutoML Systems}  
+\label{subsec:automl_systems}  
+  
+\gls{automl} emerged in the mid-2010s as a response to the growing demand for   
+\gls{ml} solutions and the limited availability of skilled data scientists   
+\cite{he2021automl}. By automating tasks such as feature engineering, algorithm   
+selection and hyperparameter optimization, \gls{automl} platforms enable domain   
+experts to develop predictive models without extensive programming expertise. This   
+automation shifts the focus from technical implementation to strategic   
+problem-solving, allowing users to concentrate on formulating research questions,   
+interpreting results and making informed decisions.
 
-% Revisar detalles
-\gls{automl} emerged as a need to bridge the gap between the growing demand for \gls{ml} solutions and the limited availability of skilled data scientists in the mid-2010s \cite{he2021automl}. By automating tasks such as feature engineering, algorithm selection, and hyperparameter optimization, \gls{automl} platforms enable domain experts to develop predictive models without extensive programming expertise. This automation shifts the focus from technical implementation to strategic problem-solving, allowing users to concentrate on formulating research questions, interpreting results, and making informed decisions. The \gls{automl} ecosystem has since expanded significantly, encompassing a diverse range of tools tailored to different user needs and organizational contexts. Commercial platforms such as Amazon SageMaker Autopilot \cite{AmazonSagemakerAutopilot}, Azure Automated ML \cite{AzureAutomatedML}, and Google AutoML\cite{GoogleAutoML}, among others, provide enterprise-grade solutions with intuitive interfaces, dedicated support, and seamless integration into existing workflows, making them attractive for organizations lacking in-house data science teams. In parallel, free and open-source frameworks such as Auto-sklearn \cite{autosklearn}, AutoGluon \cite{autogluon}, H2O \cite{h2o3}, and Ludwig \cite{ludwig}, among others, have driven innovation through community collaboration, offering transparent, customizable, and freely accessible alternatives that support both academic research and practical applications. However, existing \gls{automl} platforms remain largely domain-agnostic and fail to address the specific requirements of clinical research. They cannot distinguish variable hierarchy (primary endpoints vs. secondary endpoints vs. exposures), handle complex inclusion/exclusion logic that defines study populations, or recognize temporal data disposition across protocol phases. No tool to date adapts to the distinct methodological requirements of patient registries, observational studies and clinical trials within a unified interface.
-
-Addressing this gap requires rethinking the relationship between automation and human expertise. \Gls{hcai} \cite{shneiderman2022human} emphasizes designing \gls{ai} systems that augment human capabilities rather than replace them, prioritizing human control, transparency, and trust. The \gls{hcai} framework (Figure \ref{fig:HCAI_dimensions}) proposes a two-dimensional design space: the level of automation (from fully manual to fully autonomous) and the level of human control (from high human control to high computer control). Effective \gls{hcai} systems balance these dimensions, providing automation where appropriate while preserving meaningful human oversight. In clinical research, this balance is particularly critical: while automation can accelerate model development, clinicians must retain control over decisions that affect patient safety, study validity, and regulatory compliance. \gls{hcai} principles thus guide the design of \gls{hamelin} by ensuring that automation serves \glspl{crp} rather than obscuring the modeling process.
+The \gls{automl} ecosystem has expanded significantly, encompassing tools tailored   
+to different user needs. Commercial platforms such as Amazon SageMaker Autopilot   
+\cite{AmazonSagemakerAutopilot}, Azure Automated ML \cite{AzureAutomatedML}, and   
+Google AutoML \cite{GoogleAutoML} provide enterprise-grade solutions with intuitive   
+interfaces and seamless integration into existing workflows. In parallel, free and open-source frameworks such as Auto-sklearn \cite{autosklearn}, AutoGluon \cite{autogluon}, H2O \cite{h2o3}, and Ludwig \cite{ludwig} have driven innovation through community collaboration, offering transparent and customizable alternatives that support both academic research and practical applications.  
+  
+However, existing \gls{automl} platforms remain largely domain-agnostic and fail to   
+address the specific requirements of clinical research. They cannot distinguish   
+variable hierarchy (primary endpoints vs. secondary endpoints vs. exposures), handle complex inclusion/exclusion logic that defines study populations or recognize temporal data disposition across protocol phases. No tool to date adapts to the   
+distinct methodological requirements of patient registries, observational studies and clinical trials within a unified interface.
+  
+Among existing frameworks, Ludwig \cite{ludwig} presents the most suitable starting   
+point for building human-centric systems. Ludwig automates the full \gls{ml}   
+workflow, including end-to-end model training, algorithm selection based on data   
+characteristics, performance evaluation with multiple metrics and validation schemes, hyperparameter optimisation, and inference on new data. Being YAML-based, a   
+human-readable format, it allows pipelines to be specified declaratively without   
+programming, making configurations transparent and editable. This declarative   
+approach aligns well with human-centered design principles, as it enables domain experts to understand and potentially adjust the modeling pipeline. The choice of Ludwig as the backend for \gls{hamelin} is further motivated by its ease of configuration, strong community support, and active open-source development, which ensure long-term maintainability \cite{palazuelos2024non}.  
+  
+Furthermore, Ludwig's explicit handling of missing data provides the transparency   
+and control required for systems that prioritize domain expert control. Missing data is a pervasive challenge in clinical datasets, where values may be absent due to patient dropout, measurement errors, or protocol deviations. For input features, users can choose to replace missing values with a constant, with the most frequent or average value, propagate values from adjacent time points, or remove incomplete cases entirely. For output features, Ludwig excludes cases with missing ground truth by default, as supervised learning requires known outcomes. This flexibility is particularly valuable in clinical research, where the appropriate treatment of missing values depends on the clinical context and study protocol, and where domain experts must retain control over such critical decisions.
+  
+\subsection{Human-Centered AI and Human-Guided ML}  
+\label{subsec:hcai_hgml}  
+  
+Addressing the gap between \gls{automl} capabilities and clinical research   
+requirements demands more than technical automation — it requires rethinking the   
+relationship between human expertise and machine intelligence. \Gls{hcai}   
+\cite{shneiderman2022human} provides a foundational framework for this, emphasizing   
+the design of \gls{ai} systems that augment human capabilities rather than replace   
+them, prioritizing human control, transparency, and trust. The \gls{hcai} framework   
+(Figure~\ref{fig:HCAI_dimensions}) proposes a two-dimensional design space: the   
+level of automation and the level of human control. Effective \gls{hcai} systems   
+balance these dimensions, providing automation where appropriate while preserving   
+meaningful human oversight. In clinical research, this balance is particularly   
+critical: while automation can accelerate model development, clinicians must retain   
+control over decisions that affect patient safety, study validity, and regulatory   
+compliance.
 
 \begin{figure}[ht]
 \centering
@@ -126,27 +166,39 @@ Addressing this gap requires rethinking the relationship between automation and 
 \label{fig:HCAI_dimensions}
 \end{figure}
   
-Building on these \gls{hcai} principles, \gls{hgml} \cite{gil2019towards} operationalizes human-centered design through specific interaction patterns where domain experts actively guide and influence the learning process. Rather than treating automation as a black box, \gls{hgml} promotes collaborative workflows where experts validate intermediate decisions and shape model behaviour. The \gls{hgml} framework defines concrete tasks that domain experts should be able to perform across three categories: data use (variable selection, variable requirements, instance selection), model development (model selection, parameter settings, solution design), and model interpretation (model assessment, model comparison, parameter comparison). These tasks provide a structured framework for evaluating how well an \gls{automl} system supports domain expert involvement. While \gls{hcai} provides high-level design principles for human-AI collaboration, \gls{hgml} translates these principles into actionable criteria grounded in \gls{ml} workflows, making it particularly suitable for assessing systems that aim to democratize predictive modeling in specialized domains.
-  
-\subsection{Ludwig AutoML}
-\label{subsec:ludwig}
-  
-Among existing \gls{automl} frameworks, Ludwig \cite{ludwig} presents an interesting starting point for building \gls{hgml} systems. Ludwig automates the full \gls{ml} workflow, including end-to-end model training, algorithm selection based on data characteristics, performance evaluation with multiple metrics and validation schemes, hyperparameter optimisation and inference on new data. Being YAML-based, a human-readable format, it allows pipelines to be specified declaratively without programming, making configurations transparent and editable. This declarative approach aligns well with \gls{hgml} principles, as it enables domain experts to understand and potentially adjust the modeling pipeline. Therefore, the choice of Ludwig as a backend for \gls{hamelin} is motivated by its ease of configuration, strong community support, and active open-source development, which ensure long-term maintainability \cite{palazuelos2024non}.  
-  
-Furthermore, Ludwig's explicit handling of data preprocessing decisions, particularly for missing data, provides the transparency and control required for \gls{hgml} systems. Missing data is a pervasive challenge in clinical datasets, where values may be absent due to patient dropout, measurement errors, or protocol deviations. Ludwig addresses this by offering domain experts explicit control over how missing values are handled. For input features, users can choose to replace missing values with a constant, with the most frequent value or average value, propagate values forward or backward from adjacent time points, or remove incomplete cases entirely. For output features (the target variable), Ludwig's default behavior is to exclude cases with missing ground truth, as supervised learning requires known outcomes to train the model. This flexibility is particularly valuable in clinical research, where the appropriate treatment of missing values depends on the clinical context, study protocol, and the mechanism causing the missingness, and where domain experts must retain control over such critical decisions.
+Building on these principles, \gls{hgml} \cite{gil2019towards} operationalizes   
+human-centered design through specific interaction patterns where domain experts   
+actively guide and influence the learning process. Rather than treating automation   
+as a black box, \gls{hgml} promotes collaborative workflows where experts validate   
+intermediate decisions and shape model behaviour. The framework defines concrete   
+tasks across three categories: data use (variable selection, variable requirements,   
+instance selection), model development (model selection, parameter settings, solution design), and model interpretation (model assessment, model comparison, parameter comparison). These tasks provide a structured framework for evaluating how well an \gls{automl} system supports domain expert involvement. While \gls{hcai} provides high-level design principles for human-AI collaboration, \gls{hgml} translates these into actionable criteria grounded in \gls{ml} workflows, making it particularly suitable for assessing systems that aim to democratize predictive modeling in specialized domains.
+
 
 \section{Application}  
 \label{sec:application}
 
 \gls{hamelin} is a no-code, protocol-aware \gls{automl} application under development specifically designed to operationalize \gls{hgml} principles for clinical research. The system design was guided by mockups based on real clinical research protocols provided by \glspl{crp}. This ensures that the interface terminology, workflow structure, and validation mechanisms align with actual clinical research practices.
 
-\subsection{Participatory Design Process}  
-\label{subsec:design_process}  
+\subsection{Participatory Design Process}
+\label{subsec:design_process}
   
-The development of \gls{hamelin} followed a participatory design approach,   
-involving \glspl{crp} from the Clinical Trials Agency of IDIVAL (Marqu\'es de Valdecilla University Hospital) throughout the design and refinement process.  
-  
-Four real clinical protocols were served as use cases to ground the interface design in authentic clinical research scenarios: one patient registry, one observational study, and two clinical trials. These are the details of each protocol that were considered to ensure the interface was tailored as closely as possible to the required needs.
+The development of \gls{hamelin} followed a collaborative design approach involving 
+a \gls{crp} from the Clinical Trials Agency Valdecilla-IDIVAL at Marqu\'es de Valdecilla University Hospital. Rather than 
+conducting a formal user study, the process was structured around ongoing 
+collaboration: the \gls{crp} contributed domain expertise throughout the entire 
+development cycle, while the data science team held weekly internal meetings to 
+review progress and integrate feedback. Periodic review sessions with the \gls{crp} 
+were held approximately every three months to evaluate the evolving interface against 
+real clinical workflows and protocols.
+
+The collaboration was grounded in four real clinical protocols provided by the 
+\gls{crp} at the outset of the project, covering the three main research designs 
+encountered in clinical practice: one patient registry, one observational study, and 
+two clinical trials. These protocols served as primary design artifacts, directly 
+shaping the interface terminology, workflow structure, and validation mechanisms. In 
+addition, a real dataset from the UPS study was provided to enable functional 
+testing of the application under realistic clinical data conditions.
   
 \begin{itemize}
 % Revisar multicenter
@@ -154,9 +206,9 @@ Four real clinical protocols were served as use cases to ground the interface de
     
     \item \textbf{UPS}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).
     
-    \item \textbf{COLCHI-COVID}: A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).
+    \item \textbf{COLCHI-COVID} (Nº EudraCT: 2020-001603-16): A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients \cite{estebanez2021effectiveness}. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).
     
-    \item \textbf{VACAB-2022}: A randomized clinical trial evaluating the efficacy of mucosal bacterial vaccines (autovaccines) compared to suppressive antibiotic therapy in patients with hip or knee prosthesis infections. The protocol defined primary endpoints (infection recurrence at 12 months), secondary endpoints (quality of life, adverse events), and inclusion/exclusion criteria (confirmed prosthesis infection, no immunosuppression, no allergy to vaccine components).
+    \item \textbf{VACAB-2022} (Nº EudraCT: 2022-004192-16): A randomized clinical trial evaluating the efficacy of mucosal bacterial vaccines (autovaccines) compared to suppressive antibiotic therapy in patients with hip or knee prosthesis infections. The protocol defined primary endpoints (infection recurrence at 12 months), secondary endpoints (quality of life, adverse events), and inclusion/exclusion criteria (confirmed prosthesis infection, no immunosuppression, no allergy to vaccine components).
 \end{itemize}  
   
 The design process was iterative and collaborative. Initial mockups were developed based on the analysis of these clinical protocols and periodically refined through feedback sessions with \glspl{crp}. These mockups served to validate the proposed terminology, workflow structure, and interaction patterns before full implementation (Figure~\ref{fig:mockup_example}).
@@ -168,6 +220,19 @@ The design process was iterative and collaborative. Initial mockups were develop
     \caption{Early mockup of the Results tab, illustrating its layout and how it relates to the other tabs in the interface (in Spanish).}
     \label{fig:mockup_example}
 \end{figure*}
+
+The collaborative process produced concrete design outcomes. Clinical terminology 
+was adopted throughout the interface --- for instance, ``primary variable'' in place 
+of ``target variable'', and ``criteria'' in place of ``filters'' --- reflecting the 
+language used in the provided protocols. The inclusion and exclusion criteria module 
+emerged directly from the structure of the clinical trial protocols, which explicitly 
+define the conditions that determine patient eligibility. The tab-based workflow was 
+shaped both by the logical sequence of clinical research protocols and by the 
+accumulated experience of the data science team in healthcare settings. While this 
+process does not constitute a formal usability evaluation, it ensured that every 
+design decision was grounded in authentic clinical practice. A structured user study 
+involving a broader sample of \glspl{crp} is planned as future work to formally 
+assess usability and effectiveness.
   
 \subsection{System Architecture}
 
@@ -425,6 +490,15 @@ Despite these strengths, the evaluation against \gls{hgml} criteria reveals impo
 
 Future research should investigate how to introduce greater user control over modeling decisions without overwhelming \glspl{crp} with technical complexity. In addition, the current system lacks support for feature engineering within the interface. Clinical researchers often need to define derived variables (e.g., body mass index from weight and height, interaction terms, or nonlinear transformations) based on domain knowledge. At present, such transformations require external preprocessing, disrupting the workflow and requiring programming skills. Future versions of \gls{hamelin} should therefore incorporate an interface for feature engineering that allows users to specify transformations using domain-meaningful concepts.
 
+Finally, the collaborative design process described in this work, while grounded in 
+real clinical protocols and sustained engagement with a \gls{crp}, does not 
+constitute a formal usability evaluation. The evidence gathered is qualitative and 
+reflects the perspective of a single domain expert. A structured user study involving 
+a broader and more diverse sample of \glspl{crp} --- including coordinators, 
+investigators, and pharmacologists --- is planned as future work to formally assess 
+the usability, learnability, and practical effectiveness of \gls{hamelin} in 
+real-world clinical research settings.
+
 
 
 \section{Conclusions}  
@@ -435,11 +509,8 @@ This work presents \gls{hamelin}, a protocol-aware \gls{automl} tool that enable
 The evaluation demonstrates strong support for data-centric operations, including variable selection, subpopulation definition, and inclusion/exclusion logic. However, model-centric tasks, such as explicit model family selection, hyperparameter specification, and systematic comparison of alternative solutions, remain partially constrained. Ongoing development aims to extend interactive control over these stages and incorporate advanced features such as feature engineering, provenance tracking, and multi-source data integration, moving the system toward full \gls{hgml} compliance where domain expertise can guide all aspects of the modeling process.
 
 
-\begin{footnotesize}
 
 \bibliographystyle{IEEEtran}
 \bibliography{bibliography.bib}
-
-\end{footnotesize}
 
 \end{document}
