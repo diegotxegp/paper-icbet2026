@@ -55,7 +55,7 @@ lucia.lavin@idival.org}
 
 % Revisar
 \begin{abstract}
-Clinical research faces a significant gap between advanced machine learning capabilities and their practical adoption by non-technical researchers. In addition, existing AutoML tools treat clinical data as generic datasets, ignoring the methodological particularities of patient registries, observational studies and clinical trials. To address this, we present HAMELIN, an AutoML application under active development that bridges this gap through a protocol-aware interface aligned with human-guided machine learning principles. HAMELIN enables clinical researchers to build predictive models without coding, incorporating their domain knowledge to guide every single stage of the entire process. The system was designed through iterative collaboration with clinical research professionals using real clinical protocols. This paper describes the design principles, architecture and implementation of HAMELIN, and evaluates its alignment with human-guided machine learning criteria.
+Clinical research faces a significant gap between advanced machine learning capabilities and their practical adoption by non-technical researchers. In addition, existing AutoML tools treat clinical data as generic datasets, ignoring the methodological particularities of patient registries, observational studies and clinical trials. To address this, we present HAMELIN, an AutoML application under active development that bridges this gap through a protocol-aware interface aligned with human-guided machine learning principles. HAMELIN enables clinical researchers to build predictive models without coding, incorporating their domain knowledge at every stage of the modeling process. The system was designed through iterative collaboration with clinical research professionals using real clinical protocols. This paper describes the design principles, architecture and implementation of HAMELIN, and evaluates its alignment with human-guided machine learning criteria.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -79,13 +79,13 @@ To address these limitations, we present \gls{hamelin}, a no-code, protocol-awar
 The contributions of this paper are fourfold: (1) a protocol-aware interface design grounded in real clinical protocols, bridging the gap between \gls{ml} pipelines and clinical research workflows; (2) a mapping between clinical research concepts, such as endpoint hierarchies, inclusion/exclusion criteria, and protocol phases, and \gls{ml} pipeline stages; (3) an operationalization and evaluation of \gls{hgml} 
 criteria in a clinical \gls{automl} system; and (4) a participatory design methodology involving \glspl{crp} throughout the entire development process.
 
-The remainder of this paper is organized as follows. Section~\ref{sec:background} provides background on clinical research methodologies, reviews existing \gls{automl} systems and their limitations in clinical contexts, including Ludwig as the underlying \gls{automl} engine, and presents the \gls{hcai} and \gls{hgml} frameworks that guide the system design. Section~\ref{sec:application} presents the participatory design process, the architecture, and the user interface of \gls{hamelin}, detailing each component of the tab-based workflow. Section~\ref{subsec:hgml_alignment} evaluates the system's alignment with \gls{hgml} criteria, identifying strengths and limitations. Section~\ref{sec:discussion} discusses design decisions, trade-offs, and implications for future \gls{automl} systems. Finally, Section~\ref{sec:conclusions} concludes the paper and outlines directions for future work.
+The remainder of this paper is organized as follows. Section~\ref{sec:background} provides background on clinical research methodologies, reviews existing \gls{automl} systems and their limitations in clinical contexts, including Ludwig as the underlying \gls{automl} engine, and presents the \gls{hcai} and \gls{hgml} frameworks that guide the system design. Section~\ref{sec:application} presents the participatory design process, the architecture, and the user interface of \gls{hamelin}, detailing each component of the tab-based workflow. Section~\ref{sec:hgml_alignment} evaluates the system's alignment with \gls{hgml} criteria, identifying strengths and limitations. Section~\ref{sec:discussion} discusses design decisions, trade-offs, and implications for future \gls{automl} systems. Finally, Section~\ref{sec:conclusions} concludes the paper and outlines directions for future work.
 
 
 \section{Background}
 \label{sec:background}
 
-Clinical research and \gls{ml} operate under fundamentally different assumptions. Understanding both their respective frameworks and the tools available for predictive modeling is essential to motivate the design of \gls{hamelin}. This section introduces the methodological foundations of clinical research, reviews existing \gls{automl} systems and their limitations in clinical contexts, and presents the human-centered frameworks that guide the design of the system.  
+Clinical research and \gls{ml} operate under fundamentally different assumptions. Understanding their respective frameworks and the tools available for predictive modeling is essential to motivate the design of \gls{hamelin}. This section introduces the methodological foundations of clinical research, reviews existing \gls{automl} systems and their limitations in clinical contexts, and presents the human-centered frameworks that guide the design of the system.  
   
 \subsection{Clinical Research Methodologies}  
 \label{subsec:clinical_research}
@@ -132,7 +132,7 @@ and control required for systems that prioritize domain expert control. Missing 
 \label{subsec:hcai_hgml}  
   
 Addressing the gap between \gls{automl} capabilities and clinical research   
-requirements demands more than technical automation — it requires rethinking the   
+requirements demands more than technical automation, it requires rethinking the   
 relationship between human expertise and machine intelligence. \Gls{hcai}   
 \cite{shneiderman2022human} provides a foundational framework for this, emphasizing   
 the design of \gls{ai} systems that augment human capabilities rather than replace   
@@ -162,7 +162,7 @@ compliance.
     \node[align=center, font=\small] at (7.5,7.5) {High \\ \vspace{0.2cm} Human Control \\ High \\ \vspace{0.2cm} Computer Automation};
 \end{tikzpicture}
 }
-\caption{Two-dimensional HCAI framework of human control and computer automation.}
+\caption{Two-dimensional HCAI framework of human control and computer automation \cite{shneiderman2022human}.}
 \label{fig:HCAI_dimensions}
 \end{figure}
   
@@ -178,7 +178,7 @@ instance selection), model development (model selection, parameter settings, sol
 \section{Application}  
 \label{sec:application}
 
-\gls{hamelin} is a no-code, protocol-aware \gls{automl} application under development specifically designed to operationalize \gls{hgml} principles for clinical research. The system design was guided by mockups based on real clinical research protocols provided by \glspl{crp}. This ensures that the interface terminology, workflow structure, and validation mechanisms align with actual clinical research practices.
+This section describes the design and implementation of \gls{hamelin}. We first outline the participatory design process that shaped the system, then present its architecture and key components, and finally detail the user interface and workflow that guide \glspl{crp} through the predictive modeling pipeline.
 
 \subsection{Participatory Design Process}
 \label{subsec:design_process}
@@ -202,41 +202,26 @@ testing of the application under realistic clinical data conditions.
   
 \begin{itemize}
 % Revisar multicenter
-    \item \textbf{EPA COVID-19}: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy), and outcomes (hospital discharge, ICU admission, death).
+    \item \textbf{COVID-19 Post-Authorization Study (EPA)}: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy), and outcomes (hospital discharge, \gls{icu} admission, death).
     
-    \item \textbf{UPS}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).
+    \item \textbf{Pressure Injuries Study (UPS)}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of pressure injuries, injury severity).
     
-    \item \textbf{COLCHI-COVID} (Nº EudraCT: 2020-001603-16): A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients \cite{estebanez2021effectiveness}. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).
+    \item \textbf{COLCHI-COVID} (Nº EudraCT: 2020-001603-16): A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of colchicine in hospitalized COVID-19 patients \cite{estebanez2021effectiveness}. The protocol defined primary endpoints (clinical improvement at day 14), secondary endpoints (mortality, \gls{icu} admission, adverse events), and detailed inclusion/exclusion criteria (age $\geq$ 18 years, confirmed COVID-19, no contraindications to colchicine).
     
     \item \textbf{VACAB-2022} (Nº EudraCT: 2022-004192-16): A randomized clinical trial evaluating the efficacy of mucosal bacterial vaccines (autovaccines) compared to suppressive antibiotic therapy in patients with hip or knee prosthesis infections. The protocol defined primary endpoints (infection recurrence at 12 months), secondary endpoints (quality of life, adverse events), and inclusion/exclusion criteria (confirmed prosthesis infection, no immunosuppression, no allergy to vaccine components).
-\end{itemize}  
+\end{itemize}
+
+Each protocol type imposes distinct requirements on the modeling pipeline. Patient registries require flexible variable selection and long-term outcome modeling, with no predefined intervention structure. Observational studies demand careful handling of confounding variables and exposure-outcome relationships. Clinical trials introduce the most complex constraints: explicit inclusion/exclusion criteria defining the study population, temporal phases separating data collection points, and endpoint hierarchies distinguishing primary efficacy outcomes from secondary safety and exploratory measures. \gls{hamelin} was designed to accommodate all three study types within a unified interface, ensuring that the modeling pipeline respects the methodological constraints of each design.
+
+The design process was iterative and collaborative. Initial mockups were developed based on the analysis of these clinical protocols and periodically refined through feedback sessions with \glspl{crp}. These mockups served to validate the proposed terminology (for instance, ``primary variable'' in place 
+of ``target variable'', and ``criteria'' in place of ``filters''), workflow structure, and interaction patterns before full implementation.
   
-The design process was iterative and collaborative. Initial mockups were developed based on the analysis of these clinical protocols and periodically refined through feedback sessions with \glspl{crp}. These mockups served to validate the proposed terminology, workflow structure, and interaction patterns before full implementation (Figure~\ref{fig:mockup_example}).
+\subsection{System Overview and Architecture}
+\label{subsec:architecture}
 
-\begin{figure*}[ht]
-    \centering
-    \setlength{\fboxsep}{0pt}
-    \fbox{\includegraphics[width=\textwidth]{img/Mockup-Resultados.png}}
-    \caption{Early mockup of the Results tab, illustrating its layout and how it relates to the other tabs in the interface (in Spanish).}
-    \label{fig:mockup_example}
-\end{figure*}
+\gls{hamelin} is a no-code, protocol-aware \gls{automl} application under development specifically designed to operationalize \gls{hgml} principles for clinical research, enabling \glspl{crp} to build predictive models without programming expertise while incorporating their domain knowledge at every stage of the process.
 
-The collaborative process produced concrete design outcomes. Clinical terminology 
-was adopted throughout the interface --- for instance, ``primary variable'' in place 
-of ``target variable'', and ``criteria'' in place of ``filters'' --- reflecting the 
-language used in the provided protocols. The inclusion and exclusion criteria module 
-emerged directly from the structure of the clinical trial protocols, which explicitly 
-define the conditions that determine patient eligibility. The tab-based workflow was 
-shaped both by the logical sequence of clinical research protocols and by the 
-accumulated experience of the data science team in healthcare settings. While this 
-process does not constitute a formal usability evaluation, it ensured that every 
-design decision was grounded in authentic clinical practice. A structured user study 
-involving a broader sample of \glspl{crp} is planned as future work to formally 
-assess usability and effectiveness.
-  
-\subsection{System Architecture}
-
-The system architecture follows a three-layer modular design (Figure~\ref{fig:system_architecture}). The interface layer provides a graphical environment for dataset loading, configuration, and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, configuration file generation, workflow coordination, and error handling. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, hyperparameter optimization, and evaluation.
+The system architecture follows a three-layer modular design (see Figure~\ref{fig:system_architecture}). The interface layer provides a graphical environment for dataset loading, configuration, and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, configuration file generation, workflow coordination, and error handling. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, hyperparameter optimization, and evaluation.
   
 This modular architecture ensures that the interface logic is separated from the \gls{automl} engine. In principle, Ludwig could be replaced with another \gls{automl} framework without requiring changes to the interface, although some adaptation of the Core Logic Layer would be necessary.
   
@@ -244,7 +229,7 @@ This modular architecture ensures that the interface logic is separated from the
 \centering
 \scalebox{0.75}{
 \begin{tikzpicture}[
-    node distance=1.5cm, % separación vertical entre nodos
+    node distance=1.5cm,
     box/.style={
         rectangle,
         draw,
@@ -262,7 +247,6 @@ This modular architecture ensures that the interface logic is separated from the
     arrow/.style={->, thick, color=gray!70, line width=0.8pt, shorten >=2pt, shorten <=2pt},
 ]
 
-% Nodos principales (vertical)
 \node[frontend] (frontend) at (0,0) {
     \textbf{Frontend}\\
     \textit{Graphical User Interface}\\[1.5mm]
@@ -293,13 +277,11 @@ This modular architecture ensures that the interface logic is separated from the
     Prediction
 };
 
-% Flechas bidireccionales verticales
 \draw[arrow] (frontend.south) -- (backend.north);
 \draw[arrow] (backend.north) -- (frontend.south);
 \draw[arrow] (backend.south) -- (ludwig.north);
 \draw[arrow] (ludwig.north) -- (backend.south);
 
-% Usuario
 \node[above=0.8cm of frontend.north, 
       rectangle, 
       draw=gray!50, 
@@ -313,7 +295,6 @@ This modular architecture ensures that the interface logic is separated from the
 \draw[arrow] (user.south) -- (frontend.north);
 \draw[arrow] (frontend.north) -- (user.south);
 
-% Etiquetas de capas rotadas 90 grados, alineadas con el centro vertical de cada nodo
 \node[anchor=center, rotate=90] at ([xshift=-4cm]frontend.center) {\small \textbf{INTERFACE LAYER}};
 \node[anchor=center, rotate=90] at ([xshift=-4cm]backend.center) {\small \textbf{CORE LOGIC LAYER}};
 \node[anchor=center, rotate=90] at ([xshift=-4cm]ludwig.center) {\small \textbf{AUTOML LAYER}};
@@ -333,19 +314,17 @@ The interface employs a tabbed navigation system that guides users through the e
 \scalebox{0.70}{
 \begin{tikzpicture}[node distance=2.5cm, auto]
 
-    % Styles
     \tikzset{
         mystep/.style={
             rectangle, rounded corners,
             minimum width=3.6cm, minimum height=1cm,
-            text centered, font=\scriptsize,
+            text centered,
             text width=3.3cm, align=center,
             line width=1.2pt
         },
         arrow/.style={thick,<->,>=stealth, gray!70}
     }
 
-    % ---------- ROW 1 ----------
     \node (start)  [mystep, fill=blue!20, draw=blue!70]   
         {\textbf{Start}\\[2mm] Project creation \& dataset loading};
 
@@ -355,7 +334,6 @@ The interface employs a tabbed navigation system that guides users through the e
     \node (primary)[mystep, fill=teal!20, draw=teal!70, right=1.0cm of status] 
         {\textbf{Primary Variable}\\[2mm] Target selection};
 
-    % ---------- ROW 2 ----------
     \node (criteria) [mystep, fill=yellow!20, draw=yellow!70, below=2cm of start] 
         {\textbf{Criteria}\\[2mm] Inclusion/exclusion};
 
@@ -368,12 +346,9 @@ The interface employs a tabbed navigation system that guides users through the e
     \node (results)  [mystep, fill=green!20, draw=green!70, right=1.0cm of process] 
         {\textbf{Results}\\[2mm] Interactive charts};
 
-    % ---------- ARROWS ----------
     \draw [arrow] (start) -- (status);
     \draw [arrow] (status) -- (primary);
-
     \draw [arrow] (primary.south) -- (criteria.north);
-
     \draw [arrow] (criteria) -- (settings);
     \draw [arrow] (settings) -- (process);
     \draw [arrow] (process) -- (results);
@@ -384,20 +359,20 @@ The interface employs a tabbed navigation system that guides users through the e
 \label{fig:workflow}
 \end{figure}
 
-The proposed workflow consists of seven sequential stages (Figure~\ref{fig:workflow}). The process initiates with project initialization and dataset loading, followed by automated exploratory data analysis to generate descriptive statistics, assess missing data patterns, and identify outcome variables. Subsequently, users specify the primary variable, with the system automatically determining the task type (classification or regression). Data filtering is performed through the definition of inclusion and exclusion criteria via a structured interface. The configuration stage encompasses the specification of evaluation metrics, missing data imputation strategies, and hyperparameter ranges. Model training is executed with progress tracking, and performance evaluation is presented through comprehensive visualizations including performance metrics, graphical representations, and confusion matrices for classification tasks (Figure~\ref{fig:tab-based_interface}). This iterative refinement process proves particularly valuable in clinical scenarios: for instance, if initial results reveal low sensitivity in detecting at-risk patients, a \gls{crp} might return to the Settings tab to adjust the evaluation metric; alternatively, if feature importance analysis identifies a critical variable with substantial missing data, the imputation strategy can be reconsidered to improve model performance.
+The proposed workflow consists of seven sequential stages (see Figure~\ref{fig:workflow}). The process initiates with project initialization and dataset loading, followed by automated exploratory data analysis to generate descriptive statistics, assess missing data patterns, and identify outcome variables. Subsequently, users specify the primary variable, with the system automatically determining the task type (classification or regression). Data filtering is performed through the definition of inclusion and exclusion criteria via a structured interface. The configuration stage encompasses the specification of evaluation metrics, missing data imputation strategies, and hyperparameter ranges. Model training is executed with progress tracking, and performance evaluation is presented through comprehensive visualizations including performance metrics, graphical representations, and confusion matrices for classification tasks (see Figure~\ref{fig:tab-based_interface}). This iterative refinement process proves particularly valuable in clinical scenarios: for instance, if initial results reveal low sensitivity in detecting at-risk patients, a \gls{crp} might return to the Settings tab to adjust the evaluation metric; alternatively, if feature importance analysis identifies a critical variable with substantial missing data, the imputation strategy can be reconsidered to improve model performance.
 
 \begin{figure*}[ht]  
     \centering  
-    \includegraphics[width=\textwidth]{img/Captura de pantalla 2025-11-26 111307.png}  
+    \includegraphics[width=\textwidth]{img/results_tab.png}  
     \caption{Training outcomes and model performance.}  
-    \label{fig:tab-based_interface}  
+    \label{fig:tab-based_interface}
 \end{figure*}
 
 
 \section{Alignment with Human-Guided ML}  
-\label{subsec:hgml_alignment}  
+\label{sec:hgml_alignment}  
   
-To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria \cite{gil2019towards}, which provide a structured framework to assess how domain experts can guide data use, model development, and result interpretation in interactive \gls{ml} systems. Applying these criteria highlights both the strengths and limitations of \gls{hamelin} in supporting clinical researchers (Table \ref{tab:hgml_alignment}).
+To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria \cite{gil2019towards}, which provide a structured framework to assess how domain experts can guide data use, model development, and result interpretation in interactive \gls{ml} systems. Applying these criteria highlights both the strengths and limitations of \gls{hamelin} in supporting clinical researchers (see Table \ref{tab:hgml_alignment}).
 
 
 \begin{table}[t]
@@ -486,7 +461,20 @@ The development of \gls{hamelin} demonstrates that protocol-aware \gls{automl} s
   
 This alignment is the result of several design decisions. First, the use of clinical terminology (e.g., ``primary variable'' instead of ``target variable'', ``criteria'' instead of ``filters'') improves accessibility and reduces cognitive friction for \glspl{crp}. Second, the tab-based workflow reflects the logical sequence of a clinical study, formulating the research question, preparing data, defining the study population, configuring the analysis, executing the models, and interpreting the results, providing a familiar and intuitive structure. Third, explicit support for inclusion and exclusion criteria addresses a critical gap in existing \gls{automl} systems and ensures that models are trained on valid populations. Finally, exposing Ludwig's missing data strategies with clinically grounded explanations enables users to make informed decisions about a complex preprocessing step.  
   
-Despite these strengths, the evaluation against \gls{hgml} criteria reveals important limitations. While \gls{hamelin} offers strong support for data-centric tasks, it provides limited functionality for model-centric and comparison tasks. Users cannot explicitly choose model families, compare alternative models, or systematically explore different modeling strategies. These limitations reflect a broader tension in \gls{automl} system design between automation and user control. In its current form, \gls{hamelin} prioritizes automation in model selection and hyperparameter tuning, delegating these decisions to Ludwig.
+Despite these strengths, the evaluation against \gls{hgml} criteria reveals  
+important limitations. While \gls{hamelin} offers strong support for data-centric  
+tasks, it provides limited functionality for model-centric and comparison tasks.  
+Users cannot explicitly choose model families, compare alternative models, or  
+systematically explore different modeling strategies. These limitations reflect a  
+broader tension in \gls{automl} system design between automation and user control.  
+In its current form, \gls{hamelin} prioritizes automation in model selection and  
+hyperparameter tuning, delegating these decisions to Ludwig. An alternative  
+approach to this tension is the integration of \glspl{llm} as conversational  
+interfaces \cite{miguel2025integrating}, where users interact with the  
+\gls{ml} pipeline through natural language prompts. While such an approach lowers  
+the technical barrier through familiar language interaction, \gls{hamelin}  
+prioritizes protocol-aware structure and clinical terminology, which is more  
+appropriate for the formal requirements of clinical research workflows.
 
 Future research should investigate how to introduce greater user control over modeling decisions without overwhelming \glspl{crp} with technical complexity. In addition, the current system lacks support for feature engineering within the interface. Clinical researchers often need to define derived variables (e.g., body mass index from weight and height, interaction terms, or nonlinear transformations) based on domain knowledge. At present, such transformations require external preprocessing, disrupting the workflow and requiring programming skills. Future versions of \gls{hamelin} should therefore incorporate an interface for feature engineering that allows users to specify transformations using domain-meaningful concepts.
 
@@ -494,8 +482,7 @@ Finally, the collaborative design process described in this work, while grounded
 real clinical protocols and sustained engagement with a \gls{crp}, does not 
 constitute a formal usability evaluation. The evidence gathered is qualitative and 
 reflects the perspective of a single domain expert. A structured user study involving 
-a broader and more diverse sample of \glspl{crp} --- including coordinators, 
-investigators, and pharmacologists --- is planned as future work to formally assess 
+a broader and more diverse sample of \glspl{crp} is planned as future work to formally assess 
 the usability, learnability, and practical effectiveness of \gls{hamelin} in 
 real-world clinical research settings.
 

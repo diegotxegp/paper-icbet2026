@@ -4,7 +4,7 @@
 ## KEYWORDS
 - (HECHO) Keywords in mayúscula.
 
-## INTRODUCTION
+## (HECHO) INTRODUCTION
 
 - (HECHO) Me parece que la introducción es demasiado directa. Primero habría que dejar más claro qué es AutoML, HGML, etc. Y después los retos. Quizás se mezclan cosas y la introducción debería quedar:
 1º Contextualizar y explicar conceptos
@@ -17,7 +17,7 @@ No mezclar en un párrafo los tres elementos previos.
 
 - (HECHO) Quitar protocolos de Introduction.
 
-# BACKGROUND
+## (Cambios hechos pero REVISAR) BACKGROUND
 
 - Me parece que habría que cambiar la estructura de esto. Quizás la nueva estructura pueda ser:
 
@@ -26,3 +26,49 @@ A. AutoML systems (y aquí hablar todo lo que se necesite de Ludwig)
 B. HGML/HCAI
 
 Antes de escribir el apartado A, poner una pequeña introducción
+
+
+## (HECHO, REVISAR) APPLICATION
+
+- Párrafo introductorio. Mover explicación de HAMELIN a otra parte.
+
+- Participatory Design Process
+Quizás aquí lo que pondría es cómo se da soporte a tres tipo de estudios. Es decir, adaptar lo siguiente que ahora está en II A: Clinical research employs distinct frameworks or protocols for their research, each with specific design principles and
+analytical constraints [5]. Patient registries collect long-term data from people who share the same medical condition. These
+registries are typically observational and aim to understand disease history, treatment patterns, and long-term outcomes.
+Observational studies test specific hypotheses about exposure-outcome associations without intervention, requiring careful
+adjustment for confounding variables and selection bias. Clinical trials evaluate interventions through randomization, blinding
+and rigorous protocols defining inclusion/exclusion criteria, temporal phases (screening, baseline, intervention, follow-up,
+endpoint evaluation) and endpoint hierarchies (primary endpoints for efficacy, secondary endpoints for safety and exploratory
+outcomes).
+These distinctions impose specific requirements on predictive modeling that generic ML pipelines ignore [6]. For instance,
+in a clinical trial, variables collected during screening (e.g., blood pressure to determine eligibility) have different meanings
+than the same variables collected at follow-up (e.g., blood pressure as an outcome). A model trained without awareness of
+these temporal and semantic constraints risks producing invalid results, such as data leakage, using information collected after
+the outcome to predict that outcome, or confounding, failing to account for variables that influence both exposure and outcome.
+
+- (HECHO) Se podría borrar imagen de mockup.
+
+
+## (HECHO) ALIGNMENT WITH HUMAN-GUIDED ML
+
+Lo suyo sería que la evaluación sea más global y que se ha verificado que la herramienta proporciona soporte para Four real clinical protocols were served as use cases to ground the interface design in authentic clinical research scenarios:
+one patient registry, one observational study, and two clinical trials. These are the details of each protocol that were considered
+to ensure the interface was tailored as closely as possible to the required needs.
+• EPA-Registro COVID-19: A multicenter patient registry documenting clinical characteristics, treatments, and outcomes
+of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes,
+cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen
+therapy), and outcomes (hospital discharge, ICU admission, death).
+• UPPS (Pressure Injuries in Neurosurgery): An observational study investigating the incidence and risk factors of
+pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables
+related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient
+positioning, use of pressure-relief surfaces, intraoperative temperature), and postoperative outcomes (presence/absence of
+pressure injuries, injury severity).
+• COLCHI-COVID: A randomized, double-blind, placebo-controlled clinical trial evaluating the efficacy and safety of
+colchicine in hospitalized COVID-19 patients. The protocol defined primary endpoints (clinical improvement at day 14),
+secondary endpoints (mortality, ICU admission, adverse events), and detailed inclusion/exclusion criteria (age ≥ 18 years,
+confirmed COVID-19, no contraindications to colchicine).
+• VACAB-2022: A randomized clinical trial evaluating the efficacy of mucosal bacterial vaccines (autovaccines) compared
+to suppressive antibiotic therapy in patients with hip or knee prosthesis infections. The protocol defined primary endpoints
+(infection recurrence at 12 months), secondary endpoints (quality of life, adverse events), and inclusion/exclusion criteria
+(confirmed prosthesis infection, no immunosuppression, no allergy to vaccine components).
