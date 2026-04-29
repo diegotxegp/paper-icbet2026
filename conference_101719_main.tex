@@ -85,7 +85,7 @@ The remainder of this paper is organized as follows. Section~\ref{sec:background
 \section{Background}
 \label{sec:background}
 
-Clinical research and \gls{ml} operate under fundamentally different assumptions. Understanding their respective frameworks and the tools available for predictive modeling is essential to motivate the design of \gls{hamelin}. This section introduces the methodological foundations of clinical research, reviews existing \gls{automl} systems and their limitations in clinical contexts, and presents the human-centered frameworks that guide the design of the system.
+Understanding the framework of clinical research and the tools available for predictive modeling is essential to motivate the design of \gls{hamelin}. This section introduces the methodological foundations of clinical research, reviews existing \gls{automl} systems and their limitations in clinical contexts, and presents the human-centered frameworks that guide the design of the system.
   
 \subsection{Clinical Research Methodologies}
 \label{subsec:clinical_research}
@@ -189,7 +189,7 @@ instance selection), model development (model selection, parameter settings, sol
 \section{Application}  
 \label{sec:application}
 
-This section describes the design and implementation of \gls{hamelin}. We first outline the participatory design process that shaped the system, then present the application itself, its architecture and key components, and finally detail the user interface and workflow that guide \glspl{crp} through the predictive modeling pipeline.
+This section describes the design and implementation of \gls{hamelin}. We first outline the participatory design process that shaped the system, then present the application, its architecture and key components, and finally detail the user interface and workflow that guide \glspl{crp} through the predictive modeling pipeline.
 
 \subsection{Participatory Design Process}
 \label{subsec:design_process}
@@ -197,11 +197,7 @@ This section describes the design and implementation of \gls{hamelin}. We first 
 The development of \gls{hamelin} followed a collaborative design approach involving 
 a \gls{crp} from the Clinical Trials Agency Valdecilla-IDIVAL at Marqu\'es de Valdecilla University Hospital. Rather than 
 conducting a formal user study, the process was structured around ongoing 
-collaboration: the \gls{crp} contributed domain expertise throughout the entire 
-development cycle, while the data science team held weekly internal meetings to 
-review progress and integrate feedback. Periodic review sessions with the \gls{crp} 
-were held approximately every three months to evaluate the evolving interface against 
-real clinical workflows and protocols.
+collaboration: while the data science team held weekly internal meetings to review progress and integrate feedback, the \gls{crp} contributed domain expertise and evaluated the evolving interface against real clinical workflows and protocols every three months throughout the development cycle.
 
 The collaboration was grounded in four real clinical protocols provided by the 
 \gls{crp} at the outset of the project, covering the three main research designs 
@@ -466,7 +462,8 @@ Systematic comparison of alternative solutions is a significant limitation. User
 
 
 \section{Discussion}  
-\label{sec:discussion}  
+\label{sec:discussion}
+
 The development of \gls{hamelin} demonstrates that protocol-aware \gls{automl} systems can help bridge the gap between advanced \gls{ml} techniques and their practical adoption in clinical research. By involving \glspl{crp} throughout the design process and grounding the interface in real clinical protocols, the system aligns more closely with established clinical research practices than generic \gls{automl} tools.
   
 This alignment is the result of several design decisions. First, the use of clinical terminology (e.g., ``primary variable'' instead of ``target variable'', ``criteria'' instead of ``filters'') improves accessibility and reduces cognitive friction for \glspl{crp}. Second, the tab-based workflow reflects the logical sequence of a clinical study, formulating the research question, preparing data, defining the study population, configuring the analysis, executing the models and interpreting the results, providing a familiar and intuitive structure. Third, explicit support for inclusion and exclusion criteria addresses a critical gap in existing \gls{automl} systems and ensures that models are trained on valid populations. Finally, exposing Ludwig's missing data strategies with clinically grounded explanations enables users to make informed decisions about a complex preprocessing step.  
@@ -478,24 +475,14 @@ Users cannot explicitly choose model families, compare alternative models, or
 systematically explore different modeling strategies. These limitations reflect a  
 broader tension in \gls{automl} system design between automation and user control.  
 In its current form, \gls{hamelin} prioritizes automation in model selection and  
-hyperparameter tuning, delegating these decisions to Ludwig. An alternative  
-approach to this tension is the integration of \glspl{llm} as conversational  
-interfaces \cite{miguel2025integrating}, where users interact with the  
-\gls{ml} pipeline through natural language prompts. While such an approach lowers  
-the technical barrier through familiar language interaction, \gls{hamelin}  
-prioritizes protocol-aware structure and clinical terminology, which is more  
-appropriate for the formal requirements of clinical research workflows.
+hyperparameter tuning, delegating these decisions to Ludwig.
 
-Future research should investigate how to introduce greater user control over modeling decisions without overwhelming \glspl{crp} with technical complexity. In addition, the current system lacks support for feature engineering within the interface. Clinical researchers often need to define derived variables (e.g., body mass index from weight and height, interaction terms, or nonlinear transformations) based on domain knowledge. At present, such transformations require external preprocessing, disrupting the workflow and requiring programming skills. Future versions of \gls{hamelin} should therefore incorporate an interface for feature engineering that allows users to specify transformations using domain-meaningful concepts.
+Future research should investigate how to introduce greater user control over modeling decisions without overwhelming \glspl{crp} with technical complexity. A promising direction is the integration of large language models (LLMs) as conversational interfaces \cite{miguel2025integrating}, where users interact with the \gls{ml} pipeline through natural language prompts. In addition, the current system lacks support for feature engineering within the interface. Clinical researchers often need to define derived variables (e.g., body mass index from weight and height, interaction terms, or nonlinear transformations) based on domain knowledge. At present, such transformations require external preprocessing, disrupting the workflow and requiring programming skills. Future versions of \gls{hamelin} should therefore incorporate an interface for feature engineering that allows users to specify transformations using domain-meaningful concepts.
 
 Finally, the collaborative design process described in this work, while grounded in 
 real clinical protocols and sustained engagement with a \gls{crp}, does not 
 constitute a formal usability evaluation. The evidence gathered is qualitative and 
-reflects the perspective of a single domain expert. A structured user study involving 
-a broader and more diverse sample of \glspl{crp} is planned as future work to formally assess 
-the usability, learnability and practical effectiveness of \gls{hamelin} in 
-real-world clinical research settings.
-
+reflects the perspective of a single domain expert. A structured user study involving a broader and more diverse sample of \glspl{crp} is planned as future work to formally assess the usability, learnability and practical effectiveness of \gls{hamelin} in real-world clinical research settings.
 
 
 \section{Conclusions}  
