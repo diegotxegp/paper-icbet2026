@@ -1,4 +1,4 @@
-\documentclass[conference,onecolumn]{IEEEtran}
+\documentclass[conference,twocolumn]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
@@ -15,6 +15,7 @@
 \usepackage{url}
 \usepackage{multirow}
 \usepackage{tabularx}
+\usepackage{dblfloatfix}
 
 \input{acronyms}
 
@@ -161,16 +162,16 @@ compliance.
 \scalebox{0.7}{
 \begin{tikzpicture}
     % Set axis limits
-    \draw[->, thick] (0,0) -- (10,0) node[anchor=north, xshift=-2cm] {Computer Automation};
-    \draw[->, thick] (0,0) -- (0,10) node[anchor=south east, rotate=90, yshift=0.1cm] {Human Control};
+    \draw[->, thick] (0,0) -- (10,0) node[anchor=north, xshift=-2cm, font=\large] {Computer Automation};
+    \draw[->, thick] (0,0) -- (0,10) node[anchor=south east, rotate=90, yshift=0.1cm, font=\large] {Human Control};
 
     \draw[dashed] (0,5) -- (10,5); % Horizontal division
     \draw[dashed] (5,0) -- (5,10); % Vertical division
 
-    \node[align=center, font=\small] at (2.5,2.5) {Low \\ \vspace{0.2cm} Human Control \\ Low \\ \vspace{0.2cm} Computer Automation};
-    \node[align=center, font=\small] at (7.5,2.5) {Low \\ \vspace{0.2cm} Human Control \\ High \\ \vspace{0.2cm} Computer Automation};
-    \node[align=center, font=\small] at (2.5,7.5) {High \\ \vspace{0.2cm} Human Control \\ Low \\ \vspace{0.2cm} Computer Automation};
-    \node[align=center, font=\small] at (7.5,7.5) {High \\ \vspace{0.2cm} Human Control \\ High \\ \vspace{0.2cm} Computer Automation};
+    \node[align=center, font=\large] at (2.5,2.5) {Low \\ \vspace{0.2cm} Human Control \\ Low \\ \vspace{0.2cm} Computer Automation};
+    \node[align=center, font=\large] at (7.5,2.5) {Low \\ \vspace{0.2cm} Human Control \\ High \\ \vspace{0.2cm} Computer Automation};
+    \node[align=center, font=\large] at (2.5,7.5) {High \\ \vspace{0.2cm} Human Control \\ Low \\ \vspace{0.2cm} Computer Automation};
+    \node[align=center, font=\large] at (7.5,7.5) {High \\ \vspace{0.2cm} Human Control \\ High \\ \vspace{0.2cm} Computer Automation};
 \end{tikzpicture}
 }
 \caption{Two-dimensional HCAI framework of human control and computer automation \cite{shneiderman2022human}.}
@@ -195,7 +196,7 @@ This section describes the design and implementation of \gls{hamelin}. We first 
 \label{subsec:design_process}
   
 The development of \gls{hamelin} followed a collaborative design approach involving 
-a \gls{crp} from the Clinical Trials Agency Valdecilla-IDIVAL at Marqu\'es de Valdecilla University Hospital. Rather than 
+a \gls{crp} from the Clinical Trials Agency of IDIVAL at Marqu\'es de Valdecilla University Hospital. Rather than 
 conducting a formal user study, the process was structured around ongoing 
 collaboration: while the data science team held weekly internal meetings to review progress and integrate feedback, the \gls{crp} contributed domain expertise and evaluated the evolving interface against real clinical workflows and protocols every three months throughout the development cycle.
 
@@ -208,8 +209,7 @@ addition, a real dataset from an observational study was provided to enable func
 testing of the application under realistic clinical data conditions. The four protocols are described below:
 
 \begin{itemize}
-% Revisar multicenter
-    \item \textbf{COVID-19 Post-Authorization Study (EPA COVID-19)}: A multicenter patient registry documenting clinical characteristics, treatments and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy) and outcomes (hospital discharge, \gls{icu} admission, death).
+    \item \textbf{COVID-19 Registry}: A multicenter patient registry documenting clinical characteristics, treatments and outcomes of COVID-19 patients. The registry collected demographic variables (age, sex, etc.), comorbidities (hypertension, diabetes, cardiovascular disease), clinical variables (symptoms, laboratory values), treatments (antivirals, corticosteroids, oxygen therapy) and outcomes (hospital discharge, \gls{icu} admission, death).
     
     \item \textbf{Pressure Injuries Study (UPS)}: An observational study investigating the incidence and risk factors of pressure injuries in neurosurgery patients undergoing procedures longer than 3 hours. The protocol specified variables related to patient characteristics (age, sex, BMI, Braden scale score), intraoperative factors (surgical duration, patient positioning, use of pressure-relief surfaces, intraoperative temperature) and postoperative outcomes (presence/absence of pressure injuries, injury severity).
     
@@ -228,10 +228,6 @@ of ``target variable'' and ``criteria'' in place of ``filters''), workflow struc
 
 \gls{hamelin} is a no-code, protocol-aware \gls{automl} application under development specifically designed to operationalize \gls{hgml} principles for clinical research, enabling \glspl{crp} to build predictive models without programming expertise while incorporating their domain knowledge at every stage of the process.
 
-The system architecture follows a three-layer modular design (see Figure~\ref{fig:system_architecture}). The interface layer provides a graphical environment for dataset loading, configuration and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, configuration file generation, workflow coordination and error handling. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, hyperparameter optimization and evaluation.
-  
-This modular architecture ensures that the interface logic is separated from the \gls{automl} engine. In principle, Ludwig could be replaced with another \gls{automl} framework without requiring changes to the interface, although some adaptation of the Core Logic Layer would be necessary.
-  
 \begin{figure}[ht]
 \centering
 \scalebox{0.75}{
@@ -296,8 +292,8 @@ This modular architecture ensures that the interface logic is separated from the
       text width=2.5cm, 
       text centered,
       rounded corners=0.2cm] (user) {
-    \scriptsize \textbf{User}\\
-    \scriptsize Clinical researcher
+    \small \textbf{User}\\
+    \small Clinical researcher
 };
 \draw[arrow] (user.south) -- (frontend.north);
 \draw[arrow] (frontend.north) -- (user.south);
@@ -311,14 +307,10 @@ This modular architecture ensures that the interface logic is separated from the
 \caption{Layered system architecture of HAMELIN.}
 \label{fig:system_architecture}
 \end{figure}
-  
-\subsection{User Interface and Workflow}
-  
-The interface employs a tabbed navigation system that guides users through the entire \gls{ml} pipeline. This design provides clear waypoints while maintaining the analytical context, with each tab representing a distinct phase that follows the logical progression typically found in clinical research protocols. A key feature of \gls{hgml} is the ability to refine the model iteratively based on initial results. The \gls{hamelin} interface supports this through a reconfiguration mechanism that allows users to revisit earlier steps and modify their choices based on emerging insights. After reviewing results, users can return to previous tabs to adjust the target variable, refine inclusion/exclusion criteria, select alternative missing data strategies, modify hyperparameter search spaces, or choose different evaluation metrics. Each modification triggers a model re-training cycle with updated results, enabling \glspl{crp} to explore the modeling space systematically, guided by clinical intuition and domain knowledge.
 
-\begin{figure}[ht]
+\begin{figure*}[h]
 \centering
-\scalebox{0.70}{
+\scalebox{0.8}{
 \begin{tikzpicture}[node distance=2.5cm, auto]
 
     \tikzset{
@@ -364,7 +356,17 @@ The interface employs a tabbed navigation system that guides users through the e
 }
 \caption{End-to-end clinical machine learning workflow in HAMELIN.}
 \label{fig:workflow}
-\end{figure}
+\end{figure*}
+
+The system architecture follows a three-layer modular design (see Figure~\ref{fig:system_architecture}). The interface layer provides a graphical environment for dataset loading, configuration and visualization. The core logic layer connects the interface to the \gls{automl} engine, handling validation, command translation, configuration file generation, workflow coordination and error handling. The \gls{automl} layer utilizes Ludwig (v0.10.4) to perform automated training, algorithm selection, hyperparameter optimization and evaluation.
+  
+This modular architecture ensures that the interface logic is separated from the \gls{automl} engine. In principle, Ludwig could be replaced with another \gls{automl} framework without requiring changes to the interface, although some adaptation of the Core Logic Layer would be necessary.
+  
+\subsection{User Interface and Workflow}
+  
+The interface employs a tabbed navigation system that guides users through the entire \gls{ml} pipeline. This design provides clear waypoints while maintaining the analytical context, with each tab representing a distinct phase that follows the logical progression typically found in clinical research protocols. A key feature of \gls{hgml} is the ability to refine the model iteratively based on initial results. The \gls{hamelin} interface supports this through a reconfiguration mechanism that allows users to revisit earlier steps and modify their choices based on emerging insights. After reviewing results, users can return to previous tabs to adjust the target variable, refine inclusion/exclusion criteria, select alternative missing data strategies, modify hyperparameter search spaces, or choose different evaluation metrics. Each modification triggers a model re-training cycle with updated results, enabling \glspl{crp} to explore the modeling space systematically, guided by clinical intuition and domain knowledge.
+
+
 
 The proposed workflow consists of seven sequential stages (see Figure~\ref{fig:workflow}). The process initiates with project initialization and dataset loading, followed by automated exploratory data analysis to generate descriptive statistics, assess missing data patterns and identify outcome variables. Subsequently, users specify the primary variable, with the system automatically determining the task type (classification or regression). Data filtering is performed through the definition of inclusion and exclusion criteria via a structured interface. The configuration stage encompasses the specification of evaluation metrics, missing data imputation strategies and hyperparameter ranges. Model training is executed with progress tracking, and performance evaluation is presented through comprehensive visualizations including performance metrics, graphical representations and confusion matrices for classification tasks (see Figure~\ref{fig:tab-based_interface}). This iterative refinement process proves particularly valuable in clinical scenarios: for instance, if initial results reveal low sensitivity in detecting at-risk patients, a \gls{crp} might return to the Settings tab to adjust the evaluation metric; alternatively, if feature importance analysis identifies a critical variable with substantial missing data, the imputation strategy can be reconsidered to improve model performance.
 
@@ -382,64 +384,64 @@ The proposed workflow consists of seven sequential stages (see Figure~\ref{fig:w
 To evaluate \gls{hamelin}, we follow the \gls{hgml} criteria \cite{gil2019towards}, which provide a structured framework to assess how domain experts can guide data use, model development and result interpretation in interactive \gls{ml} systems. Applying these criteria highlights both the strengths and limitations of \gls{hamelin} in supporting clinical researchers (see Table \ref{tab:hgml_alignment}).
 
 
-\begin{table}[t]
+\begin{table*}[ht]
 \caption{Mapping between \gls{hgml} tasks \cite{gil2019towards} and \gls{hamelin} clinical functionalities.}
 \label{tab:hgml_alignment}
 \centering
 \renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\columnwidth}{@{}p{0.18\columnwidth} p{0.28\columnwidth} p{0.32\columnwidth} p{0.17\columnwidth}@{}}
+\begin{tabularx}{\textwidth}{@{}p{0.18\textwidth} p{0.28\textwidth} p{0.32\textwidth} p{0.17\textwidth}@{}}
 \toprule
 \textbf{Category} & \textbf{HGML task} & \textbf{Where in HAMELIN} & \textbf{Implementation status} \\
 \midrule
 \multicolumn{4}{l}{\textbf{Data Use}} \\
 \midrule
-\multirow{5}{*}{\parbox[t]{0.18\columnwidth}{Variable Selection}} 
-& \parbox[t]{0.28\columnwidth}{[VS1] Variable selection (prioritise variables)} & \parbox[t]{0.32\columnwidth}{\emph{Primary Variable}, \emph{Settings}} & \parbox[t]{0.17\columnwidth}{Partially} \\
-& \parbox[t]{0.28\columnwidth}{[VS2] Create new variables from existing ones} & \parbox[t]{0.32\columnwidth}{-- (external preprocessing)} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[VS3] Change temporal / spatial framing of variables} & \parbox[t]{0.32\columnwidth}{\emph{Criteria}; protocol phases} & \parbox[t]{0.17\columnwidth}{Partially} \\
-& \parbox[t]{0.28\columnwidth}{[VS4] Impute missing values using other variables} & \parbox[t]{0.32\columnwidth}{\emph{Settings}} & \parbox[t]{0.17\columnwidth}{Fully} \\
-& \parbox[t]{0.28\columnwidth}{[VS5] Augment data using new sources} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\multirow{5}{*}{\parbox[t]{0.18\textwidth}{Variable Selection}} 
+& \parbox[t]{0.28\textwidth}{[VS1] Variable selection (prioritise variables)} & \parbox[t]{0.32\textwidth}{\emph{Primary Variable}, \emph{Settings}} & \parbox[t]{0.17\textwidth}{Partially} \\
+& \parbox[t]{0.28\textwidth}{[VS2] Create new variables from existing ones} & \parbox[t]{0.32\textwidth}{-- (external preprocessing)} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[VS3] Change temporal / spatial framing of variables} & \parbox[t]{0.32\textwidth}{\emph{Criteria}; protocol phases} & \parbox[t]{0.17\textwidth}{Partially} \\
+& \parbox[t]{0.28\textwidth}{[VS4] Impute missing values using other variables} & \parbox[t]{0.32\textwidth}{\emph{Settings}} & \parbox[t]{0.17\textwidth}{Fully} \\
+& \parbox[t]{0.28\textwidth}{[VS5] Augment data using new sources} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \cmidrule(lr){1-4}
-\parbox[t]{0.18\columnwidth}{Variable Requirements} 
-& \parbox[t]{0.28\columnwidth}{[VR1] Require inclusion / exclusion of variables} & \parbox[t]{0.32\columnwidth}{\emph{Criteria}} & \parbox[t]{0.17\columnwidth}{Fully} \\
+\parbox[t]{0.18\textwidth}{Variable Requirements} 
+& \parbox[t]{0.28\textwidth}{[VR1] Require inclusion / exclusion of variables} & \parbox[t]{0.32\textwidth}{\emph{Criteria}} & \parbox[t]{0.17\textwidth}{Fully} \\
 \cmidrule(lr){1-4}
-\multirow{4}{*}{\parbox[t]{0.18\columnwidth}{Instance Selection}} 
-& \parbox[t]{0.28\columnwidth}{[IS1] Select instances to label / annotate} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[IS2] Select subpopulation of instances} & \parbox[t]{0.32\columnwidth}{\emph{Criteria}} & \parbox[t]{0.17\columnwidth}{Fully} \\
-& \parbox[t]{0.28\columnwidth}{[IS3] Remove specific instances} & \parbox[t]{0.32\columnwidth}{\emph{Criteria}} & \parbox[t]{0.17\columnwidth}{Fully} \\
-& \parbox[t]{0.28\columnwidth}{[IS4] Define train/test split and cross-validation} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\multirow{4}{*}{\parbox[t]{0.18\textwidth}{Instance Selection}} 
+& \parbox[t]{0.28\textwidth}{[IS1] Select instances to label / annotate} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[IS2] Select subpopulation of instances} & \parbox[t]{0.32\textwidth}{\emph{Criteria}} & \parbox[t]{0.17\textwidth}{Fully} \\
+& \parbox[t]{0.28\textwidth}{[IS3] Remove specific instances} & \parbox[t]{0.32\textwidth}{\emph{Criteria}} & \parbox[t]{0.17\textwidth}{Fully} \\
+& \parbox[t]{0.28\textwidth}{[IS4] Define train/test split and cross-validation} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \midrule
 \multicolumn{4}{l}{\textbf{Model Development}} \\
 \midrule
-\multirow{2}{*}{\parbox[t]{0.18\columnwidth}{Model Selection}} 
-& \parbox[t]{0.28\columnwidth}{[MS1] Request a specific type of model} & \parbox[t]{0.32\columnwidth}{\emph{AutoML Layer} (Ludwig)} & \parbox[t]{0.17\columnwidth}{Partially} \\
-& \parbox[t]{0.28\columnwidth}{[MS2] Replace the model in a prior solution} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\multirow{2}{*}{\parbox[t]{0.18\textwidth}{Model Selection}} 
+& \parbox[t]{0.28\textwidth}{[MS1] Request a specific type of model} & \parbox[t]{0.32\textwidth}{\emph{AutoML Layer} (Ludwig)} & \parbox[t]{0.17\textwidth}{Partially} \\
+& \parbox[t]{0.28\textwidth}{[MS2] Replace the model in a prior solution} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \cmidrule(lr){1-4}
-\parbox[t]{0.18\columnwidth}{Parameter Settings} 
-& \parbox[t]{0.28\columnwidth}{[PT1] Request specific parameter values} & \parbox[t]{0.32\columnwidth}{\emph{Settings}, Hyperparameter search (Ludwig)} & \parbox[t]{0.17\columnwidth}{Partially} \\
+\parbox[t]{0.18\textwidth}{Parameter Settings} 
+& \parbox[t]{0.28\textwidth}{[PT1] Request specific parameter values} & \parbox[t]{0.32\textwidth}{\emph{Settings}, Hyperparameter search (Ludwig)} & \parbox[t]{0.17\textwidth}{Partially} \\
 \cmidrule(lr){1-4}
-\multirow{2}{*}{\parbox[t]{0.18\columnwidth}{Solution Design}} 
-& \parbox[t]{0.28\columnwidth}{[SD1] Request specific data-preparation steps} & \parbox[t]{0.32\columnwidth}{\emph{Settings}} & \parbox[t]{0.17\columnwidth}{Fully} \\
-& \parbox[t]{0.28\columnwidth}{[SD2] Replace a data-preparation step} & \parbox[t]{0.32\columnwidth}{\emph{Settings}} & \parbox[t]{0.17\columnwidth}{Fully} \\
+\multirow{2}{*}{\parbox[t]{0.18\textwidth}{Solution Design}} 
+& \parbox[t]{0.28\textwidth}{[SD1] Request specific data-preparation steps} & \parbox[t]{0.32\textwidth}{\emph{Settings}} & \parbox[t]{0.17\textwidth}{Fully} \\
+& \parbox[t]{0.28\textwidth}{[SD2] Replace a data-preparation step} & \parbox[t]{0.32\textwidth}{\emph{Settings}} & \parbox[t]{0.17\textwidth}{Fully} \\
 \midrule
 \multicolumn{4}{l}{\textbf{Model Interpretation}} \\
 \midrule
-\multirow{2}{*}{\parbox[t]{0.18\columnwidth}{Model Assessment}} 
-& \parbox[t]{0.28\columnwidth}{[QC1] Request quantities of interest / metrics} & \parbox[t]{0.32\columnwidth}{\emph{Results}} & \parbox[t]{0.17\columnwidth}{Fully} \\
-& \parbox[t]{0.28\columnwidth}{[QC2] Request intermediate results} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\multirow{2}{*}{\parbox[t]{0.18\textwidth}{Model Assessment}} 
+& \parbox[t]{0.28\textwidth}{[QC1] Request quantities of interest / metrics} & \parbox[t]{0.32\textwidth}{\emph{Results}} & \parbox[t]{0.17\textwidth}{Fully} \\
+& \parbox[t]{0.28\textwidth}{[QC2] Request intermediate results} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \cmidrule(lr){1-4}
-\multirow{5}{*}{\parbox[t]{0.18\columnwidth}{Model Comparison}} 
-& \parbox[t]{0.28\columnwidth}{[MC1] Compare solutions with different model types} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[MC2] Compare solutions on different subsets of instances} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[MC3] Compare solutions with same model but different data prep} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[MC4] Compare solutions with same model but different parameters} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
-& \parbox[t]{0.28\columnwidth}{[MC5] Compare two models with all other steps equal} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\multirow{5}{*}{\parbox[t]{0.18\textwidth}{Model Comparison}} 
+& \parbox[t]{0.28\textwidth}{[MC1] Compare solutions with different model types} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[MC2] Compare solutions on different subsets of instances} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[MC3] Compare solutions with same model but different data prep} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[MC4] Compare solutions with same model but different parameters} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
+& \parbox[t]{0.28\textwidth}{[MC5] Compare two models with all other steps equal} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \cmidrule(lr){1-4}
-\parbox[t]{0.18\columnwidth}{Parameter Comparison} 
-& \parbox[t]{0.28\columnwidth}{[PC1] Several solutions with same model and varying parameter ranges} & \parbox[t]{0.32\columnwidth}{--} & \parbox[t]{0.17\columnwidth}{Not implemented} \\
+\parbox[t]{0.18\textwidth}{Parameter Comparison} 
+& \parbox[t]{0.28\textwidth}{[PC1] Several solutions with same model and varying parameter ranges} & \parbox[t]{0.32\textwidth}{--} & \parbox[t]{0.17\textwidth}{Not implemented} \\
 \bottomrule
 \end{tabularx}
-\end{table}
+\end{table*}
 
   
 \subsection{Data Use}  
